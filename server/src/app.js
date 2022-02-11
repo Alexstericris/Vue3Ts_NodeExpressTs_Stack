@@ -8,7 +8,7 @@ var Post = require("../models/posts");
 const app = express()
 app.use(morgan('combined'))
 app.use(bodyParser.json())
-app.use(cors())
+app.use(cors({origin: 'http://alexcristea.sytes.net:8080'}))
 
 // DB Setup
 var mongoose = require('mongoose');

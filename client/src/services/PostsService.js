@@ -2,6 +2,7 @@ import Api from '@/services/Api'
 
 export default {
   fetchPosts () {
+    console.log(process.env)
     return Api().get('posts')
   },
 

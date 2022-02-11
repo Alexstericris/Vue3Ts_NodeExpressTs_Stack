@@ -4,3 +4,9 @@ db/*
 
 node_modules/
 
+/.idea/codeStyles/codeStyleConfig.xml
+/.idea/modules.xml
+/.idea/inspectionProfiles/Project_Default.xml
+/.idea/teststack.iml
+/.idea/vcs.xml
+/.idea/workspace.xml
