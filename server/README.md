@@ -104,7 +104,7 @@ MongoDB settings, like version and backup frequency (Note: there is no option to
 7. It will now take a couple of minutes to create the cluster and you will be redirected to the MongoDB Atlas Admin interface.
 8. Now you must configure access and security before you can use the database.
 9. To whitelist an IP address, go to the **Network Access** section and click the "Add IP Address" button. For local development you can select your current IP address.
-10. Create a user by selecting the **Add New Database User** in Database Access, adding a username and password (Password Authentication method) and give him read and write access to any database within the cluster.
+10. Create a user by selecting the **Add New Database Types** in Database Access, adding a username and password (Password Authentication method) and give him read and write access to any database within the cluster.
 A user account is required to connect to the database, so remember these values because you will need them as part of your connection string.
 11. Within the Clusters section, click the **Connect** button in your cluster to connect to the database.
 12. You could now connect to the cluster using [MongoDB Compass](https://www.mongodb.com/products/compass), which is a graphical interface (GUI) to interact with the database.

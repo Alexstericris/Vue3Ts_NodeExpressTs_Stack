@@ -10,3 +10,5 @@ node_modules/
 /.idea/teststack.iml
 /.idea/vcs.xml
 /.idea/workspace.xml
+/serverold/
+/node-express-mongoose-demo/

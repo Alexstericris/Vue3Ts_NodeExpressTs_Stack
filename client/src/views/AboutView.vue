@@ -14,7 +14,7 @@ export default defineComponent({
   },
   methods:{
     test(){
-      this.axios.get('posts').then(response=>{
+      this.axios.get('/api/users').then(response=>{
         console.log(response.data)
       })
     }
@@ -27,7 +27,7 @@ export default defineComponent({
     <div class="container">
       <h1>Hello Digga</h1>
       <h1>Was Geht</h1>
-      <button @click="testApi">Test</button>
+      <button>Test</button>
     </div>
     <!--    <div class="jumbotron text-center">-->
     <!--            <h1>Welcome to the <strong>VENoM</strong> Example Starter App</h1>-->

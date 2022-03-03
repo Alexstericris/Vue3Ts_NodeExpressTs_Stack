@@ -2,11 +2,13 @@ import passport from "passport";
 import passportLocal from "passport-local";
 import passportFacebook from "passport-facebook";
 import { find } from "lodash";
+import {ExtractJwt,Strategy as JWTStrategy}  from "passport-jwt";
 
 // import { User, UserType } from '../models/User';
 import { User, UserDocument } from "../models/User";
 import { Request, Response, NextFunction } from "express";
 import { NativeError } from "mongoose";
+import {JWT_SECRET} from "../util/secrets";
 
 const LocalStrategy = passportLocal.Strategy;
 const FacebookStrategy = passportFacebook.Strategy;
@@ -39,6 +41,26 @@ passport.use(new LocalStrategy({ usernameField: "email" }, (email, password, don
     });
 }));
 
+passport.use(
+    new JWTStrategy(
+        {
+            secretOrKey: JWT_SECRET,
+            jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken()
+        },
+        async (jwt_payload, done) => {
+            User.findOne({id: jwt_payload._id}, function (err:NativeError, user:UserDocument) {
+                if (err) {
+                    return done(err,false);
+                }
+                if (user) {
+                    return done(null,user);
+                } else {
+                    return done(null, false);
+                }
+            });
+        }
+    )
+);
 
 /**
  * OAuth Strategy Overview

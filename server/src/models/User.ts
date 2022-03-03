@@ -3,6 +3,7 @@ import crypto from "crypto";
 import mongoose from "mongoose";
 
 export type UserDocument = mongoose.Document & {
+    username: string;
     email: string;
     password: string;
     passwordResetToken: string;

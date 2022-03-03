@@ -1,6 +1,8 @@
 import HomeView from "@/views/HomeView.vue";
+import store from "@/store";
+import type {NavigationGuardNext, RouteLocation, RouteLocationNormalized, RouteRecordRaw} from "vue-router";
 
-const routes=[
+const routes:Array<RouteRecordRaw>=[
     {
         path: '/',
         name: 'home',
@@ -15,8 +17,26 @@ const routes=[
         component: () => import('../views/AboutView.vue')
     },
     {
+        path: "/login",
+        component: ()=>import('../views/LoginView.vue'),
+        beforeEnter:(to:RouteLocationNormalized,from:RouteLocationNormalized,next:NavigationGuardNext)=>{
+            if (store.state.token.length>15) {
+                next(from)
+            }else{
+                next()
+            }
+        }
+    },
+    {
         path: "/register",
-        component: ()=>import('../components/registration/Registration.vue')
+        component: ()=>import('../views/RegisterView.vue'),
+        beforeEnter:(to:RouteLocationNormalized,from:RouteLocationNormalized,next:NavigationGuardNext)=>{
+            if (store.state.token.length>15) {
+                next(from)
+            }else{
+                next()
+            }
+        }
     }
 ]
 export default routes
