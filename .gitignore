@@ -12,3 +12,5 @@ node_modules/
 /.idea/workspace.xml
 /serverold/
 /node-express-mongoose-demo/
+/.idea/Vue3Ts_NodeExpressTs_Stack.iml
+/.idea/.gitignore
