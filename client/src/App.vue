@@ -1,18 +1,19 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
 import Navigation from "@/components/Navigation.vue";
+import Toast from "@/components/mixins/Toast.vue";
 </script>
 
 <template>
-  <header>
-<!--    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />-->
-<!--    <div class="wrapper">-->
-<!--      <HelloWorld msg="You did it!" />-->
-<!--    </div>-->
-    <Navigation></Navigation>
-  </header>
-
-  <RouterView/>
+    <header>
+        <!--    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />-->
+        <!--    <div class="wrapper">-->
+        <!--      <HelloWorld msg="You did it!" />-->
+        <!--    </div>-->
+        <Navigation></Navigation>
+    </header>
+    <RouterView/>
+    <Toast></Toast>
 </template>
 
 <style>

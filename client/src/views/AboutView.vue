@@ -1,24 +1,27 @@
 <script lang="ts">
 import {defineComponent} from "vue";
-export default defineComponent({
-  props:{
-    msg: String
-  },
-  data() {
-    return{
 
+export default defineComponent({
+    inject:[],
+    props: {
+        msg: String
+    },
+    data() {
+        return {}
+    },
+    created() {
+        this.test()
+    },
+    mounted() {
+        this.$store.commit('toast/success','yo digga')
+    },
+    methods: {
+        test() {
+            this.axios.get('/api/users').then(response => {
+                console.log(response.data)
+            })
+        }
     }
-  },
-  created() {
-    this.test()
-  },
-  methods:{
-    test(){
-      this.axios.get('/api/users').then(response=>{
-        console.log(response.data)
-      })
-    }
-  }
 })
 </script>
 

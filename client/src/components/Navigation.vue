@@ -20,6 +20,8 @@ export default defineComponent({
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
         <template v-if="user">
+            <RouterLink to="/game">Game</RouterLink>
+            <RouterLink to="/characters">Characters</RouterLink>
             <RouterLink to="/login"  @click="logout">Logout</RouterLink>
         </template>
         <template v-else>

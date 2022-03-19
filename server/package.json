@@ -51,7 +51,8 @@
         "jsonwebtoken": "^8.5.1",
         "pug": "3.0.2",
         "winston": "3.3.3",
-        "cors": "^2.8.5"
+        "cors": "^2.8.5",
+        "socket.io": "^4.4.1"
     },
     "devDependencies": {
         "@types/async": "3.2.5",
@@ -86,6 +87,7 @@
         "@types/cors": "^2.8.12",
         "@types/passport-jwt": "3.0.6",
         "@types/jsonwebtoken": "^8.5.8",
+        "@types/socket.io": "^3.0.2",
         "@typescript-eslint/eslint-plugin": "4.14.2",
         "@typescript-eslint/parser": "4.14.2",
         "chai": "4.3.0",

@@ -471,7 +471,8 @@ export const clientRegister = async (req: Request, res: Response, next: NextFunc
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-        res.status(404).send({...{errors}});
+        res.status(404).send(errors);
+        return;
     }
 
     const user = new User({
@@ -482,18 +483,22 @@ export const clientRegister = async (req: Request, res: Response, next: NextFunc
 
     User.findOne({email: req.body.email}, (err: NativeError, existingUser: UserDocument) => {
         if (err) {
-            return next(err);
+            next(err);
+            return;
         }
         if (existingUser) {
-            return res.status(404).send({msg:"User with email already taken."});
+            res.status(404).send({msg:"User with email already taken."});
+            return;
         }
         user.save((err) => {
             if (err) {
-                return next(err);
+                next(err);
+                return;
             }
             req.logIn(user, (err) => {
                 if (err) {
-                    return next(err);
+                    next(err);
+                    return;
                 }
                 delete user.password;
                 jwt.sign({user:user},

@@ -3,9 +3,10 @@ import App from './App.vue'
 import router from './router'
 import VueAxios from "vue-axios";
 import axios from "axios";
-import store, {key} from "@/store";
+import {key, store} from "@/stores/store";
 import "bootstrap"
 import "bootstrap/dist/css/bootstrap.min.css"
+import {ioclient} from "@/ioclient";
 
 const app = createApp(App)
 
@@ -16,4 +17,13 @@ app.use(VueAxios, axios.create({
     timeout: 1000,
 }))
 await store.dispatch("getAuthenticatedUser")
-app.mount('#app')
+app.mount('#app');
+// const io = ioclient;
+
+// send a message to the server
+// io.emit("hello from client", 5, "6", {7: Uint8Array.from([8])});
+//
+// // receive a message from the server
+// io.on("hello from server", (arg: any) => {
+//     console.log('banana')
+// });

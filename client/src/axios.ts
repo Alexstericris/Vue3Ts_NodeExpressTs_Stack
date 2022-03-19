@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const token = localStorage.getItem('token');
+console.log(token);
 
 export default axios.create({
     baseURL: 'http://alexcristea.sytes.net:8081/',

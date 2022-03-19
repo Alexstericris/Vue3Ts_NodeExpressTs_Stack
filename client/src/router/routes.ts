@@ -1,8 +1,10 @@
 import HomeView from "@/views/HomeView.vue";
-import store from "@/store";
+import {store} from "@/stores/store";
 import type {NavigationGuardNext, RouteLocation, RouteLocationNormalized, RouteRecordRaw} from "vue-router";
+import GameApi from "@/apis/GameApi";
+import type {ComponentPublicInstance} from "vue";
 
-const routes:Array<RouteRecordRaw>=[
+const routes: Array<RouteRecordRaw> = [
     {
         path: '/',
         name: 'home',
@@ -11,29 +13,50 @@ const routes:Array<RouteRecordRaw>=[
     {
         path: '/about',
         name: 'about',
-        // route level code-splitting
-        // this generates a separate chunk (About.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
         component: () => import('../views/AboutView.vue')
     },
     {
-        path: "/login",
-        component: ()=>import('../views/LoginView.vue'),
-        beforeEnter:(to:RouteLocationNormalized,from:RouteLocationNormalized,next:NavigationGuardNext)=>{
-            if (store.state.token.length>15) {
+        path: "/game",
+        component: () => import('../views/GameView.vue'),
+        beforeEnter: (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
+            if (!store.state.user) {
                 next(from)
-            }else{
+            } else {
+                next()
+            }
+        }
+    },
+    {
+        path: "/characters",
+        component: () => import('../views/CharactersView.vue'),
+        beforeEnter: (to: RouteLocationNormalized,
+                      from: RouteLocationNormalized,
+                      next: NavigationGuardNext) => {
+            if (!store.state.user) {
+                next(from)
+            } else {
+                next()
+            }
+        }
+    },
+    {
+        path: "/login",
+        component: () => import('../views/LoginView.vue'),
+        beforeEnter: (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
+            if (store.state.token.length > 15) {
+                next(from)
+            } else {
                 next()
             }
         }
     },
     {
         path: "/register",
-        component: ()=>import('../views/RegisterView.vue'),
-        beforeEnter:(to:RouteLocationNormalized,from:RouteLocationNormalized,next:NavigationGuardNext)=>{
-            if (store.state.token.length>15) {
+        component: () => import('../views/RegisterView.vue'),
+        beforeEnter: (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
+            if (store.state.token.length > 15) {
                 next(from)
-            }else{
+            } else {
                 next()
             }
         }
