@@ -1,6 +1,7 @@
 <script lang="ts">
 import {defineComponent} from "vue";
 import GameApi from "@/apis/GameApi";
+import {Modal} from "bootstrap";
 
 export default defineComponent({
     name: 'NewCharacter',
@@ -9,12 +10,23 @@ export default defineComponent({
             character: {
                 color: '',
                 size: 50,
-            }
+            },
+            modal: {} as Modal
         }
     },
-    methods:{
+    mounted() {
+        let modal = document.querySelector('#newCharacterModal')
+        if (modal) {
+            this.modal = new Modal(modal, {});
+        }
+    },
+    methods: {
         newCharacter() {
-            GameApi.createCharacter(this.character)
+            GameApi.createCharacter(this.character).then(() => {
+                this.modal.hide()
+            }).catch(() => {
+                this.$store.commit('toast/error', 'Failed to create character')
+            })
         },
     }
 })
@@ -22,8 +34,7 @@ export default defineComponent({
 
 <template>
     <button class="btn btn-primary"
-            data-bs-toggle="modal"
-            data-bs-target="#newCharacterModal"
+            @click="modal.show()"
             v-text="'New Character'"></button>
     <div id="newCharacterModal" class="modal" tabindex="-1">
         <div class="modal-dialog">

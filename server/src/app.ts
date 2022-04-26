@@ -33,7 +33,7 @@ mongoose.connect(mongoUrl, {useNewUrlParser: true, useCreateIndex: true, useUnif
 });
 
 // Express configuration
-app.set("port", 8081);
+app.set("port", process.env.PORT);
 app.set("views", path.join(__dirname, "../views"));
 app.set("view engine", "pug");
 app.use(compression());
@@ -77,7 +77,7 @@ app.use((req, res, next) => {
 app.use(
     express.static(path.join(__dirname, "public"), {maxAge: 31557600000})
 );
-app.use(cors({origin: "http://alexcristea.sytes.net:8080"}));
+app.use(cors({origin: process.env.FRONTEND_URL}));
 
 
 /**

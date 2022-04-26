@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { RouterView } from 'vue-router'
+import {RouterView} from 'vue-router'
 import Navigation from "@/components/Navigation.vue";
-import Toast from "@/components/mixins/Toast.vue";
+import Toast from "@/components/snippets/Toast.vue";
 </script>
 
 <template>
@@ -14,66 +14,86 @@ import Toast from "@/components/mixins/Toast.vue";
     </header>
     <RouterView/>
     <Toast></Toast>
+    <footer class="pt-3 mt-4 text-muted text-center border-top">
+        <div class="container">
+            <div>
+                © Digital Fruit 2021
+            </div>
+        </div>
+    </footer>
 </template>
 
-<style>
-@import '@/assets/base.css';
+<style lang="sass">
+@import 'assets/base.css'
 
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+#app
+    //max-width: 1280px
+    margin: 0 auto
+    //padding: 2rem
 
-  font-weight: normal;
-}
+    font-weight: normal
 
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
+.router-link-active
+    color: #5a965a !important
+
+header
+    line-height: 1.5
+    max-height: 100vh
+
+.text-shadow
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.4)
+
+.text-shadow-2
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 1)
+
+.mt-6
+    margin-top: 6rem
+
+.logo
+    display: block
+    margin: 0 auto 2rem
+
 
 a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
-}
+.green
+    text-decoration: none
+    color: hsla(160, 100%, 37%, 1)
+    transition: 0.4s
 
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
-}
+.display-7
+    font-size: 2rem
 
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
+@media (hover: hover)
+    a:hover
+        background-color: hsla(160, 100%, 37%, 0.2)
 
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
 
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
+//
+//nav
+//  width: 100%
+//  font-size: 12px
+//  text-align: center
+//  margin-top: 2rem
 
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
 
-nav a:first-of-type {
-  border: 0;
-}
+nav a.router-link-exact-active
+    color: var(--color-text)
+
+
+nav a.router-link-exact-active:hover
+    background-color: transparent
+
+
+nav a
+    display: inline-block
+    padding: 0 1rem
+    border-left: 1px solid var(--color-border)
+
+
+nav a:first-of-type
+    border: 0
+
 
 /*@media (min-width: 1024px) {*/
 /*  body {*/

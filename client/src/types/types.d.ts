@@ -5,15 +5,13 @@ export interface User {
     password:string,
 }
 
-export interface LoginEvent extends  Event{
-    target:{
-        elements:{
-            email:{
-                value:string
-            },
-            password:{
-                value:string
-            }
+export interface LoginFormSubmitTarget {
+    elements: {
+        email: {
+            value: string
+        },
+        password: {
+            value: string
         }
     }
 }

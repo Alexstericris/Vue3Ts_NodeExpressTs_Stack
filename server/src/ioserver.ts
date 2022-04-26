@@ -8,7 +8,7 @@ import {CharacterRemoteSocket, CharactersCollection, CharacterSocket} from "game
 export const registerSocketIo = (server: http.Server): Server => {
     const ioserver = new Server(server, {
         cors: {
-            origin: "http://alexcristea.sytes.net:8080",
+            origin: process.env.FRONTEND_URL,
             methods: ["GET", "POST"],
             // allowedHeaders: ["x-schubwerk-token"],
             // credentials: falsey
@@ -34,6 +34,9 @@ export const registerSocketIo = (server: http.Server): Server => {
     ioserver.on("connection",(socket:CharacterSocket) => {
         socket.on("pendingGameJoin", async (character: CharacterDocument) => {
             console.log("player joined");
+            if (!character) {
+                return;
+            }
             socket.character = character;
             socket.join("room1");
             const playersInRoom = await ioserver.sockets.in("room1").fetchSockets();

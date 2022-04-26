@@ -13,10 +13,10 @@ const app = createApp(App)
 app.use(router)
 app.use(store,key)
 app.use(VueAxios, axios.create({
-    baseURL: 'http://alexcristea.sytes.net:8081/',
+    baseURL: import.meta.env.VITE_API_URL,
     timeout: 1000,
 }))
-await store.dispatch("getAuthenticatedUser")
+store.dispatch("getAuthenticatedUser")
 app.mount('#app');
 // const io = ioclient;
 

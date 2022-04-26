@@ -7,13 +7,15 @@ import GameApi from "@/apis/GameApi";
 import {mapState} from "vuex";
 import type {Character, CharactersCollection, Position} from "@/types/gametypes";
 import {Socket} from "socket.io-client";
+import BaseCanvasLayer from "@/components/game/BaseCanvasLayer.vue";
+import TestCanvasLayer from "@/components/game/TestCanvasLayer.vue";
 
 export default defineComponent({
     name:'GameView',
-    components: {Player, BaseLayer,OtherPlayer},
+    components: {TestCanvasLayer, BaseCanvasLayer, Player, BaseLayer,OtherPlayer},
     data() {
         return{
-            character:null,
+            character:{} as Character,
             otherCharacters:{} as CharactersCollection,
         }
     },
@@ -39,12 +41,14 @@ export default defineComponent({
 </script>
 
 <template>
+<!--    <TestCanvasLayer></TestCanvasLayer>-->
+<!--    <BaseCanvasLayer></BaseCanvasLayer>-->
     <BaseLayer>
         <template v-if="character">
             <Player :character="character"></Player>
         </template>
                 <template :key="characterId" v-for="(otherCharacter,characterId) in otherCharacters">
-                    <component v-if="this.character._id!==characterId"
+                    <component v-if="character?._id!==characterId"
                                :character="otherCharacter"
                         :is="'OtherPlayer'"></component>
                 </template>

@@ -1,10 +1,9 @@
 import axios from "axios";
 
 const token = localStorage.getItem('token');
-console.log(token);
 
 export default axios.create({
-    baseURL: 'http://alexcristea.sytes.net:8081/',
+    baseURL: import.meta.env.VITE_API_URL,
     timeout: 1000,
     headers:{
         'Authorization':`Bearer ${token}`

@@ -7,7 +7,7 @@ export default defineComponent({
     computed: {
         ...mapState(['user'])
     },
-    methods:{
+    methods: {
         logout() {
             RegistrationApi.logout();
         },
@@ -16,22 +16,47 @@ export default defineComponent({
 </script>
 
 <template>
-    <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-        <template v-if="user">
-            <RouterLink to="/game">Game</RouterLink>
-            <RouterLink to="/characters">Characters</RouterLink>
-            <RouterLink to="/login"  @click="logout">Logout</RouterLink>
-        </template>
-        <template v-else>
-            <RouterLink to="/login">Login</RouterLink>
-            <RouterLink to="/register">Register</RouterLink>
-        </template>
-
+    <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
+        <RouterLink to="/">
+            <img class="digital-fruit-logo"
+                 alt="Digital Fruit"
+                 src="@/assets/Digital_fruit3.svg">
+        </RouterLink>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="container-fluid">
+                <ul class="navbar-nav fs-5  me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <RouterLink class="nav-link" to="/">Home</RouterLink>
+                    </li>
+                    <li class="nav-item">
+                        <RouterLink class="nav-link" to="/about">About</RouterLink>
+                    </li>
+                    <template v-if="user">
+                        <li class="nav-item">
+                            <RouterLink class="nav-link" to="/game">Game</RouterLink>
+                        </li>
+                        <li class="nav-item">
+                            <RouterLink class="nav-link" to="/characters">Characters</RouterLink>
+                        </li>
+                        <li class="ms-auto nav-item">
+                            <RouterLink class="nav-link" to="/login" @click="logout">Logout</RouterLink>
+                        </li>
+                    </template>
+                    <template v-else>
+                        <li class="ms-auto nav-item">
+                            <RouterLink class="nav-link" to="/login">Login</RouterLink>
+                        </li>
+                        <li class="nav-item">
+                            <RouterLink class="nav-link" to="/register">Register</RouterLink>
+                        </li>
+                    </template>
+                </ul>
+            </div>
+        </div>
     </nav>
 </template>
 
-<style scoped>
-
+<style lang="sass" scoped>
+.digital-fruit-logo
+    height: 3rem
 </style>

@@ -15,3 +15,4 @@ node_modules/
 /.idea/Vue3Ts_NodeExpressTs_Stack.iml
 /.idea/.gitignore
 /.idea/dataSources.xml
+/client/.env
