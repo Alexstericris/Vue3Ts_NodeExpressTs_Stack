@@ -14,7 +14,7 @@ import Toast from "@/components/snippets/Toast.vue";
     </header>
     <RouterView/>
     <Toast></Toast>
-    <footer class="pt-3 mt-4 text-muted text-center border-top">
+    <footer class="pt-3 mt-4 page-footer col-sm-12 text-muted text-center border-top">
         <div class="container">
             <div>
                 © Digital Fruit 2021
@@ -54,6 +54,9 @@ header
     display: block
     margin: 0 auto 2rem
 
+.page-footer
+    position: fixed
+    bottom: 10px
 
 a,
 .green
