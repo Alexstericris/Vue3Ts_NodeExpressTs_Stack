@@ -23,6 +23,12 @@ export default defineComponent({
                     style: 'width:89%',
 
                 }, {
+                    name: 'Node JS',
+                    level: 40,
+                    img: 'nodejs-logo.svg',
+                    style: 'width:80%',
+
+                }, {
                     name: 'Typescript',
                     level: 40,
                     img: 'Typescript_logo_2020.svg',
@@ -36,6 +42,11 @@ export default defineComponent({
                     name: 'Laravel',
                     level: 90,
                     img: 'laravel-2.svg',
+                    style: 'width:89%',
+                }, {
+                    name: 'Python',
+                    level: 30,
+                    img: 'python-logo.svg',
                     style: 'width:89%',
                 }, {
                     name: 'Ubuntu',
@@ -60,7 +71,7 @@ export default defineComponent({
         this.test()
     },
     mounted() {
-        this.$store.commit('toast/success', 'yo digga')
+        // this.$store.commit('toast/success', 'yo digga')
     },
     methods: {
         test() {
@@ -77,21 +88,28 @@ export default defineComponent({
 
 <template>
     <main>
-        <div class="container mt-6 py-4">
-            <header class="pb-3 mb-4 border-bottom">
+        <div class="container">
+            <header class="pb-3">
                 <span class="fs-4">Developer</span>
             </header>
-            <div class="alex-background p-3 mb-4 bg-light rounded-3 ">
+            <div class="alex-background p-3 bg-light rounded-3 ">
                 <div class="container-fluid h-100">
                     <div class="text-white m-0 py-5 col-sm-12 col-lg-5 col-md-5 bg-dark bg-opacity-25 h-100 rounded-3 p-3">
                         <h1 class="text-shadow display-5 fw-bold">Alex Cristea</h1>
-                        <p class="text-shadow-2 col-md-8 fs-4">Developing Web since 2019</p>
-                        <p class="text-shadow-2 col-md-8 fs-4">Working for schubwerk GmbH as a full stack developer</p>
+                        <p class="text-shadow-2 fs-5">Developing Web since 2019.</p>
+                        <p class="text-shadow-2 fs-5">Working for
+                            <a class="text-decoration-none text-light-green" href="https://schubwerk.de">schubwerk GmbH</a>
+                            as a full stack developer.
+                        </p>
+                        <p class="text-shadow-2 fs-5">Studying Computer Science at
+                            <a class="text-decoration-none text-light-green" href="https://schubwerk.de">Johannes Gutenberg University</a>
+                            since 2020.
+                        </p>
                         <!--                    <button class="btn btn-primary btn-lg" type="button">Example button</button>-->
                     </div>
                 </div>
             </div>
-            <div class="pb-3 mb-4 border-bottom ">
+            <div class="pt-2 mt-4 border-top ">
                 <span class="fs-4">Skills</span>
             </div>
             <div class="row align-items-md-stretch">

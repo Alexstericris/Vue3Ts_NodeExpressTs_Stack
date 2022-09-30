@@ -21,7 +21,8 @@ export default defineComponent({
 })
 </script>
 <template>
-    <div>
+    <div class="mt-5 register">
+        <div class="container">
         <form @submit.prevent="register">
             <div class="form-group form-floating mb-3">
                 <input v-model="user.username"
@@ -56,6 +57,7 @@ export default defineComponent({
             </div>
             <button class="btn btn-primary" type="submit">Register</button>
         </form>
+        </div>
     </div>
 </template>
 <style scoped>

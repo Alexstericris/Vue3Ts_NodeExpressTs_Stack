@@ -1,25 +1,30 @@
-<script setup lang="ts">
-import TheWelcome from '@/components/TheWelcome.vue'
+<script lang="ts">
+import {defineComponent} from "vue";
+import {mapState} from "vuex";
+
+export default defineComponent({
+    computed: {
+        ...mapState(['user'])
+    }
+});
+
 </script>
 
 <template>
     <main>
-        <div class="container mt-6 py-4">
+        <div class="container mt-5 py-4">
             <div class="row align-items-md-stretch">
-                <RouterLink class="mt-4 col-sm-6" to="/">
-                    <div class="h-100 p-5 bg-light border rounded-3 text-center">
-                        <h2>Cloud Storage</h2>
-                        <!--                        <p>Swap the background-color utility and add a `.text-*` color utility to mix up the jumbotron look. Then, mix and match with additional component themes and more.</p>-->
-                        <!--                        <button class="btn btn-outline-light" type="button">Example button</button>-->
-                    </div>
-                </RouterLink>
-                <RouterLink class="mt-4 col-sm-6" to="/">
-                    <div class="h-100 p-5 bg-light border rounded-3 text-center">
-                        <h2>Simple Multiplayer Game</h2>
-                        <!--                        <p>Swap the background-color utility and add a `.text-*` color utility to mix up the jumbotron look. Then, mix and match with additional component themes and more.</p>-->
-                        <!--                        <button class="btn btn-outline-light" type="button">Example button</button>-->
-                    </div>
-                </RouterLink>
+                <div class="px-10 py-5 rounded-3 bg-light col-sm-6 h-100 text-center">
+                    <a class="text-decoration-none" href="http://digitalfruit.sytes.net:81">
+                        Cloud Storage
+                    </a>
+                </div>
+                <div class="px-10 py-5 rounded-3 bg-light col-sm-6 h-100  text-center">
+                    <RouterLink class="text-decoration-none"
+                                :to="user?'/game':'/login'">
+                        Simple Multiplayer Game
+                    </RouterLink>
+                </div>
             </div>
         </div>
     </main>
@@ -65,4 +70,7 @@ a
     background-position: 0 60%
     height: 950px
 
+.px-10
+    padding-left: 5rem
+    padding-right: 5rem
 </style>

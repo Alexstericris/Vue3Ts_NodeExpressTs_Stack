@@ -9,5 +9,8 @@
   <body>
     <div id="app"></div>
     <script type="module" src="/src/main.ts"></script>
+    <script>
+        !function(c,r){r[c]=r[c]||{ready:function(e){var t,n=document.getElementsByTagName("head")[0],a=document.createElement("script");window;a.onload=a.onreadystatechange=function(){a.readyState&&!/^c|loade/.test(a.readyState)||t||(a.onload=a.onreadystatechange=null,t=1,r[c].ready(e))},a.async=1,a.src="http://local.tracker.schubwerk.com:8000/js/tracking.js",n.parentNode.insertBefore(a,n)}}}("SchubwerkTracking",this),SchubwerkTracking.ready(function(){const e=new SchubwerkTracking({projectId:"f998768e-557e-4557-ab4e-87995078feee",host:"local.tracker.schubwerk.com:8000/api/tracker",protocol:"http",version:"v1"});e.initAutoTracking()});
+    </script>
   </body>
 </html>

@@ -27,13 +27,24 @@ export default defineComponent({
 <template>
   <div class="mt-5 login">
     <div class="container">
-      <form @submit.prevent="attemptLogin">
-        <input name="email"
-               type="email"
-               class="form-control"
-               placeholder="Email">
-        <input name="password" type="password" class="form-control" placeholder="********">
-        <button type="submit" class="btn btn-primary">Login</button>
+        <form @submit.prevent="attemptLogin">
+            <div class="form-group form-floating mb-3">
+                <input name="email"
+                       id="email"
+                       type="email"
+                       class="form-control"
+                       placeholder="Email">
+                <label for="email" class="form-label">Email</label>
+            </div>
+            <div class="form-group form-floating mb-3">
+                <input name="password"
+                       id="password"
+                       type="password"
+                       class="form-control"
+                       placeholder="********">
+                <label for="password" class="form-label">Password</label>
+            </div>
+          <button type="submit" class="btn btn-primary">Login</button>
       </form>
     </div>
   </div>

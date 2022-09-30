@@ -6,7 +6,6 @@ import axios from "axios";
 import {key, store} from "@/stores/store";
 import "bootstrap"
 import "bootstrap/dist/css/bootstrap.min.css"
-import {ioclient} from "@/ioclient";
 
 const app = createApp(App)
 

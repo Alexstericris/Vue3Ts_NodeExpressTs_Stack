@@ -12,9 +12,9 @@ import Toast from "@/components/snippets/Toast.vue";
         <!--    </div>-->
         <Navigation></Navigation>
     </header>
-    <RouterView/>
+    <RouterView class="pt-6 mb-5"/>
     <Toast></Toast>
-    <footer class="pt-3 mt-4 page-footer col-sm-12 text-muted text-center border-top">
+    <footer class="py-2 mt-4 page-footer col-sm-12 text-muted text-center bg-white border-top">
         <div class="container">
             <div>
                 © Digital Fruit 2021
@@ -35,7 +35,7 @@ import Toast from "@/components/snippets/Toast.vue";
 
 
 .router-link-active
-    color: #5a965a !important
+    color: #00b379 !important
 
 header
     line-height: 1.5
@@ -48,7 +48,10 @@ header
     text-shadow: 0px 4px 4px rgba(0, 0, 0, 1)
 
 .mt-6
-    margin-top: 6rem
+    margin-top: 5rem
+
+.pt-6
+    padding-top: 5rem
 
 .logo
     display: block
@@ -56,10 +59,9 @@ header
 
 .page-footer
     position: fixed
-    bottom: 10px
+    bottom: 0px
 
-a,
-.green
+a,.green
     text-decoration: none
     color: hsla(160, 100%, 37%, 1)
     transition: 0.4s
@@ -67,9 +69,9 @@ a,
 .display-7
     font-size: 2rem
 
-@media (hover: hover)
-    a:hover
-        background-color: hsla(160, 100%, 37%, 0.2)
+a:hover, .nav-link:hover
+    color: currentColor
+    filter: brightness(0.9) !important
 
 
 //
@@ -96,6 +98,9 @@ nav a
 
 nav a:first-of-type
     border: 0
+
+.text-light-green
+    color: #95e6cc !important
 
 
 /*@media (min-width: 1024px) {*/
