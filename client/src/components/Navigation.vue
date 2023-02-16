@@ -20,7 +20,7 @@ export default defineComponent({
         <RouterLink to="/">
             <img class="digital-fruit-logo"
                  alt="Digital Fruit"
-                 src="@/assets/Digital_fruit3.svg">
+                 src="@/assets/Digital_fruit.png">
         </RouterLink>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <div class="container-fluid">
