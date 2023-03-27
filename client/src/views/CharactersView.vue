@@ -16,7 +16,7 @@ export default defineComponent({
 </script>
 
 <template>
-<div>
+<div class="container mt-6 py-4 pt-6 mb-5 bg-white rounded">
     <CharactersList></CharactersList>
     <NewCharacter></NewCharacter>
 </div>

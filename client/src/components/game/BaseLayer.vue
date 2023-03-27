@@ -7,7 +7,7 @@ export default defineComponent({
 </script>
 
 <template>
-    <svg id="mainSVG">
+    <svg id="mainSVG" class="bg-white rounded">
         <slot></slot>
     </svg>
 </template>

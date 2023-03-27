@@ -22,8 +22,8 @@ export default defineComponent({
         <div :key="character._id" v-for="character in characters" class="row-cols-3">
             <svg class="character">
                 <circle ref="player" :fill="character.attributes.color"
-                        :cx="character.position.xAxis"
-                        :cy="character.position.yAxis"
+                        :cx="character.attributes.size"
+                        :cy="character.attributes.size"
                         :r="character.attributes.size"/>
             </svg>
         </div>

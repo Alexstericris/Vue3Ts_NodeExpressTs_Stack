@@ -11,48 +11,50 @@ import BaseCanvasLayer from "@/components/game/BaseCanvasLayer.vue";
 import TestCanvasLayer from "@/components/game/TestCanvasLayer.vue";
 
 export default defineComponent({
-    name:'GameView',
-    components: {TestCanvasLayer, BaseCanvasLayer, Player, BaseLayer,OtherPlayer},
-    data() {
-        return{
-            character:{} as Character,
-            otherCharacters:{} as CharactersCollection,
-        }
-    },
-    computed:{
-        ...mapState(['socket'])
-    },
-    beforeCreate: async function () {
-        await GameApi.getCharacters().then(res => {
-            this.character = res.data[0];
-        });
-        this.socket.emit('pendingGameJoin', this.character);
-        this.socket.on('playerJoined', (otherCharacters: CharactersCollection) => {
-            this.otherCharacters = otherCharacters;
-        })
-        this.socket.on('positionUpdated',(characterId:string,position:Position)=>{
-            this.otherCharacters[characterId].position = position;
-        })
-    },
-    beforeUnmount() {
-        this.socket.emit('playerLeft', this.character);
+  name: 'GameView',
+  components: {TestCanvasLayer, BaseCanvasLayer, Player, BaseLayer, OtherPlayer},
+  data() {
+    return {
+      character: {} as Character,
+      otherCharacters: {} as CharactersCollection,
     }
+  },
+  computed: {
+    ...mapState(['socket'])
+  },
+  beforeCreate: async function () {
+    await GameApi.getCharacters().then(res => {
+      this.character = res.data[0];
+    });
+    this.socket.emit('pendingGameJoin', this.character);
+    this.socket.on('playerJoined', (otherCharacters: CharactersCollection) => {
+      this.otherCharacters = otherCharacters;
+    })
+    this.socket.on('positionUpdated', (characterId: string, position: Position) => {
+      this.otherCharacters[characterId].position = position;
+    })
+  },
+  beforeUnmount() {
+    this.socket.emit('playerLeft', this.character);
+  }
 });
 </script>
 
 <template>
-<!--    <TestCanvasLayer></TestCanvasLayer>-->
-<!--    <BaseCanvasLayer></BaseCanvasLayer>-->
+  <!--    <TestCanvasLayer></TestCanvasLayer>-->
+  <!--    <BaseCanvasLayer></BaseCanvasLayer>-->
+  <div class="container mt-6">
     <BaseLayer>
-        <template v-if="character">
-            <Player :character="character"></Player>
-        </template>
-                <template :key="characterId" v-for="(otherCharacter,characterId) in otherCharacters">
-                    <component v-if="character?._id!==characterId"
-                               :character="otherCharacter"
-                        :is="'OtherPlayer'"></component>
-                </template>
+      <template v-if="character?._id">
+        <Player :character="character"></Player>
+      </template>
+      <template :key="characterId" v-for="(otherCharacter,characterId) in otherCharacters">
+        <component v-if="character?._id!==characterId"
+                   :character="otherCharacter"
+                   :is="'OtherPlayer'"></component>
+      </template>
     </BaseLayer>
+  </div>
 </template>
 
 <style scoped>

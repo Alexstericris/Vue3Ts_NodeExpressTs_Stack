@@ -90,7 +90,7 @@ export default defineComponent({
     <main>
         <div class="container">
             <header class="pb-3">
-                <span class="fs-4">Developer</span>
+                <span class="fs-4 text-shadow display-5 fw-bold text-white">Developer</span>
             </header>
             <div class="alex-background p-3 bg-light rounded-3 ">
                 <div class="container-fluid h-100">
@@ -110,7 +110,7 @@ export default defineComponent({
                 </div>
             </div>
             <div class="pt-2 mt-4 border-top ">
-                <span class="fs-4">Skills</span>
+                <span class="fs-4 text-shadow display-5 fw-bold text-white">Skills</span>
             </div>
             <div class="row align-items-md-stretch">
                 <div :key="index" v-for="(skill,index) in skills" class="mt-4 col-sm-3">

@@ -5,73 +5,79 @@ import Toast from "@/components/snippets/Toast.vue";
 </script>
 
 <template>
-    <header>
-        <!--    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />-->
-        <!--    <div class="wrapper">-->
-        <!--      <HelloWorld msg="You did it!" />-->
-        <!--    </div>-->
-        <Navigation></Navigation>
-    </header>
-    <RouterView class="pt-6 mb-5"/>
-    <Toast></Toast>
-    <footer class="py-2 mt-4 page-footer col-sm-12 text-muted text-center bg-white border-top">
-        <div class="container">
-            <div>
-                © Digital Fruit 2021
-            </div>
-        </div>
-    </footer>
+  <header>
+    <!--    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />-->
+    <!--    <div class="wrapper">-->
+    <!--      <HelloWorld msg="You did it!" />-->
+    <!--    </div>-->
+    <Navigation></Navigation>
+  </header>
+  <RouterView class="mt-6 mb-5"/>
+  <Toast></Toast>
+  <footer class="py-2 mt-4 page-footer col-sm-12 text-muted text-center bg-white border-top">
+    <div class="container">
+      <div>
+        © Digital Fruit 2021
+      </div>
+    </div>
+  </footer>
 </template>
 
 <style lang="sass">
 @import 'assets/base.css'
 
 #app
-    //max-width: 1280px
-    margin: 0 auto
-    //padding: 2rem
+  position: absolute
+  overflow: auto
+  background-color: #8ACAA9
+  top: 0
+  bottom: 0
+  right: 0
+  left: 0
 
-    font-weight: normal
-
+body
+  position: relative
+  margin: 0
+  padding: 0
 
 .router-link-active
-    color: #00b379 !important
+  color: #00b379 !important
 
 header
-    line-height: 1.5
-    max-height: 100vh
+  line-height: 1.5
+  max-height: 100vh
 
 .text-shadow
-    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.4)
+  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.4)
 
 .text-shadow-2
-    text-shadow: 0px 4px 4px rgba(0, 0, 0, 1)
+  text-shadow: 0px 4px 4px rgba(0, 0, 0, 1)
 
 .mt-6
-    margin-top: 5rem
+  margin-top: 5rem
 
 .pt-6
-    padding-top: 5rem
+  padding-top: 5rem
 
 .logo
-    display: block
-    margin: 0 auto 2rem
+  display: block
+  margin: 0 auto 2rem
 
 .page-footer
-    position: fixed
-    bottom: 0px
+  position: fixed
+  bottom: 0px
 
-a,.green
-    text-decoration: none
-    color: hsla(160, 100%, 37%, 1)
-    transition: 0.4s
+a, .green
+  text-decoration: none
+  color: hsla(160, 100%, 37%, 1)
+  transition: 0.4s
 
 .display-7
-    font-size: 2rem
+  font-size: 2rem
 
-a:hover, .nav-link:hover
-    color: currentColor
-    filter: brightness(0.9) !important
+//a:hover, .nav-link:hover
+//  color: currentColor !important
+//  filter: brightness(0.9) !important
 
 
 //
@@ -83,24 +89,24 @@ a:hover, .nav-link:hover
 
 
 nav a.router-link-exact-active
-    color: var(--color-text)
+  color: var(--color-text)
 
 
 nav a.router-link-exact-active:hover
-    background-color: transparent
+  background-color: transparent
 
 
 nav a
-    display: inline-block
-    padding: 0 1rem
-    border-left: 1px solid var(--color-border)
+  display: inline-block
+  padding: 0 1rem
+  border-left: 1px solid var(--color-border)
 
 
 nav a:first-of-type
-    border: 0
+  border: 0
 
 .text-light-green
-    color: #95e6cc !important
+  color: #95e6cc !important
 
 
 /*@media (min-width: 1024px) {*/

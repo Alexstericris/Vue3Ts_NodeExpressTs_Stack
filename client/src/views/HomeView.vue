@@ -12,19 +12,15 @@ export default defineComponent({
 
 <template>
     <main>
-        <div class="container mt-5 py-4">
-            <div class="row align-items-md-stretch">
-                <div class="px-10 py-5 rounded-3 bg-light col-sm-6 h-100 text-center">
-                    <a class="text-decoration-none" href="http://digitalfruit.sytes.net:81">
+        <div class="container mt-5 py-4 text-center">
+            <div class="flex flex-wrap justify-content-center">
+                    <a class="btn text-nowrap px-10 mx-2 py-5 bg-light rounded text-decoration-none" href="http://digitalfruit.sytes.net:81">
                         Cloud Storage
                     </a>
-                </div>
-                <div class="px-10 py-5 rounded-3 bg-light col-sm-6 h-100  text-center">
-                    <RouterLink class="text-decoration-none"
+                    <RouterLink class="btn text-nowrap mx-2 px-10 py-5 bg-light rounded text-decoration-none"
                                 :to="user?'/game':'/login'">
                         Simple Multiplayer Game
                     </RouterLink>
-                </div>
             </div>
         </div>
     </main>
@@ -62,7 +58,7 @@ li
     margin: 0 10px
 
 a
-    color: #42b983
+    color: #00b379
 
 .welcome
     background: url("@/assets/alexAndMariusPc.jpg") no-repeat
