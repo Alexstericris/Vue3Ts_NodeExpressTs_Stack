@@ -66,6 +66,10 @@ export const registerSocketIo = (server: http.Server): Server => {
         socket.on("disconnect",()=>{
             console.log("player disconnected");
         });
+        socket.on("shootBullet", (bullet:any) => {
+            console.log("shootBullet");
+            ioserver.to("room1").emit("shootBullet",bullet);
+        });
     });
 
     return ioserver;

@@ -20,7 +20,7 @@ export default defineComponent({
 <template>
     <div v-if="characters">
         <div :key="character._id" v-for="character in characters" class="row-cols-3">
-            <svg class="character">
+            <svg class="character mb-3">
                 <circle ref="player" :fill="character.attributes.color"
                         :cx="character.attributes.size"
                         :cy="character.attributes.size"

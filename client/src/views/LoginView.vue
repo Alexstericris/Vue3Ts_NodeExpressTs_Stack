@@ -9,8 +9,6 @@ export default defineComponent({
     return{
     }
   },
-  created() {
-  },
   methods: {
       attemptLogin($event: Event): void {
           let formTarget=$event.target as LoginFormSubmitTarget|null
@@ -25,8 +23,8 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="mt-5 login">
-    <div class="container">
+  <div class="container">
+<!--    <div class="container">-->
         <form @submit.prevent="attemptLogin">
             <div class="form-group form-floating mb-3">
                 <input name="email"
@@ -46,7 +44,7 @@ export default defineComponent({
             </div>
           <button type="submit" class="btn btn-primary">Login</button>
       </form>
-    </div>
+<!--    </div>-->
   </div>
 </template>
 

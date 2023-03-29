@@ -152,10 +152,12 @@ export default defineComponent({
             }
         },
         persistPosition(){
-            this.socket.emit('positionUpdated',this.character._id,{
-                xAxis:this.xAxis,
-                yAxis:this.yAxis
-            })
+          let position={
+            xAxis:this.xAxis,
+            yAxis:this.yAxis
+          }
+          this.$store.commit("gameStore/setCharacterPosition", position)
+          this.socket.emit('positionUpdated', this.character._id, position)
         }
     }
 });

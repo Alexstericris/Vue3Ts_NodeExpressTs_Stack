@@ -5,26 +5,28 @@ import Player from "@/components/game/Player.vue";
 import OtherPlayer from "@/components/game/OtherPlayer.vue";
 import GameApi from "@/apis/GameApi";
 import {mapState} from "vuex";
-import type {Character, CharactersCollection, Position} from "@/types/gametypes";
+import type {Character,Bullet as BulletType, CharactersCollection, Position} from "@/types/gametypes";
 import {Socket} from "socket.io-client";
-import BaseCanvasLayer from "@/components/game/BaseCanvasLayer.vue";
-import TestCanvasLayer from "@/components/game/TestCanvasLayer.vue";
+import Crosshair from "@/components/game/Crosshair.vue";
+import Bullets from "@/components/game/Bullets.vue";
+// import BaseCanvasLayer from "@/components/game/BaseCanvasLayer.vue";
+// import TestCanvasLayer from "@/components/game/TestCanvasLayer.vue";
 
 export default defineComponent({
   name: 'GameView',
-  components: {TestCanvasLayer, BaseCanvasLayer, Player, BaseLayer, OtherPlayer},
+  components: {Crosshair, Bullets, Player, BaseLayer, OtherPlayer},
   data() {
     return {
-      character: {} as Character,
       otherCharacters: {} as CharactersCollection,
     }
   },
   computed: {
-    ...mapState(['socket'])
+    ...mapState(['socket']),
+    ...mapState('gameStore', ['character', 'bullets'])
   },
   beforeCreate: async function () {
     await GameApi.getCharacters().then(res => {
-      this.character = res.data[0];
+      this.$store.commit("gameStore/setCharacter", res.data[0])
     });
     this.socket.emit('pendingGameJoin', this.character);
     this.socket.on('playerJoined', (otherCharacters: CharactersCollection) => {
@@ -36,7 +38,7 @@ export default defineComponent({
   },
   beforeUnmount() {
     this.socket.emit('playerLeft', this.character);
-  }
+  },
 });
 </script>
 
@@ -47,7 +49,9 @@ export default defineComponent({
     <BaseLayer>
       <template v-if="character?._id">
         <Player :character="character"></Player>
+        <Crosshair></Crosshair>
       </template>
+      <Bullets></Bullets>
       <template :key="characterId" v-for="(otherCharacter,characterId) in otherCharacters">
         <component v-if="character?._id!==characterId"
                    :character="otherCharacter"
