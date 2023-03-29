@@ -31,7 +31,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <g id="gameCrosshair">
+  <g id="gameCrosshair" v-if="centerX !== undefined && centerY !== undefined">
     <circle :cx="centerX" :cy="centerY" r="5" fill="white" stroke="black" stroke-width="1"/>
     <!--Horizontal    -->
     <line :x1="centerX-size/2" :y1="centerY" :x2="centerX+size/2" :y2="centerY" stroke="black" stroke-width="1"/>
