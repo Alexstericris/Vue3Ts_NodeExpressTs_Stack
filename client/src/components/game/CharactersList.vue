@@ -11,7 +11,7 @@ export default defineComponent({
         }
     },
     beforeCreate() {
-        GameApi.getCharacters().then(res => {
+      GameApi.getCharacters().then(res => {
             this.characters=res.data;
         });
     },

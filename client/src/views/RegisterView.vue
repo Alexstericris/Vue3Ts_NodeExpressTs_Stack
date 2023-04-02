@@ -14,9 +14,9 @@ export default defineComponent({
         }
     },
     methods: {
-        register() {
-            RegistrationApi.register(this.user);
-        },
+      register() {
+        RegistrationApi.register(this.user);
+      },
     }
 })
 </script>

@@ -49,6 +49,7 @@ export const registerSocketIo = (server: http.Server): Server => {
            ioserver.in("room1").emit("playerJoined",characters);
         });
         socket.on("playerLeft", (character: CharacterDocument) => {
+            console.log("player left");
             ioserver.to("room1").emit("playerLeft", character);
         });
         socket.on("positionUpdated",async (characterId:string,position:Position)=>{
@@ -61,7 +62,6 @@ export const registerSocketIo = (server: http.Server): Server => {
                         console.log(err);
                     });
             socket.broadcast.to("room1").emit("positionUpdated", characterId, position);
-
         });
         socket.on("disconnect",()=>{
             console.log("player disconnected");

@@ -1,6 +1,7 @@
 <script lang="ts">
 import {defineComponent} from "vue";
 import ProgressBar from "@/components/snippets/ProgressBar.vue";
+import http from "@/axios";
 
 export default defineComponent({
     components: {ProgressBar},
@@ -68,17 +69,14 @@ export default defineComponent({
         }
     },
     created() {
-        this.test()
-    },
-    mounted() {
-        // this.$store.commit('toast/success', 'yo digga')
+        // this.test()
     },
     methods: {
-        test() {
-            this.axios.get('/api/users').then(response => {
-                console.log(response.data)
-            })
-        },
+        // test() {
+        //     http.get('/api/users').then(response => {
+        //         console.log(response.data)
+        //     })
+        // },
         getImgSrc(img: string) {
             return new URL(`../assets/${img}`, import.meta.url).href
         },

@@ -1,11 +1,12 @@
 import type {InjectionKey} from 'vue'
 import {createStore, Store} from 'vuex'
-import axios from "../axios";
 import type {User} from "@/types/types";
 import {ioclient} from "@/ioclient";
 import type {Socket} from "socket.io-client";
 import {toast} from "@/stores/toastStore";
 import {gameStore} from "@/stores/gameStore";
+import type {AxiosError, AxiosResponse, AxiosStatic} from "axios";
+import http from "@/axios";
 
 export interface State {
     token: string
@@ -41,14 +42,14 @@ export const store = createStore<State>({
     actions: {
         getAuthenticatedUser(context: any) {
             context.commit('setLoading', true)
-            return axios.post('/auth/user').then(response => {
+            return http.post('/auth/user').then((response:AxiosResponse<any>) => {
                 if (!context.state.token) {
                     context.commit('setToken', response.data.token);
                 }
                 context.commit('setUser', response.data.user)
                 context.commit('setIoClient', context.state.token)
                 context.commit('setLoading', false)
-            }).catch(e => {
+            }).catch((e:AxiosError) => {
                 context.commit('setToken', '')
                 context.commit('setLoading', false)
             })

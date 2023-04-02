@@ -4,31 +4,41 @@ import type {Bullet, Character, Position} from "@/types/gametypes";
 
 export interface GameState {
     character: Character,
+    otherCharacters: Array<Character>
     bullets: Array<Bullet>
     mouseX: number | null
     mouseY: number | null,
     clicked: boolean,
     clickX: number,
     clickY: number,
+    gameStarted:boolean,
 }
 
 export const gameStore: Module<GameState, State> = {
     namespaced: true,
     state: {
         character: {} as Character,
+        otherCharacters:[],
         bullets: [],
         mouseX: null,
         mouseY: null,
         clicked: false,
         clickX: 0,
-        clickY: 0
+        clickY: 0,
+        gameStarted: false,
     },
     mutations: {
+        setGameStarted(state:GameState,gameStarted:boolean) {
+            state.gameStarted = gameStarted;
+        },
         setCharacter(state: GameState, character: Character) {
             state.character = character
         },
         setCharacterPosition(state: GameState, position: Position) {
             state.character.position = position;
+        },
+        setOtherCharacters(state: GameState,characters:Array<Character>) {
+            state.otherCharacters=characters
         },
         addBullet(state: GameState, bullet: Bullet) {
             state.bullets.push(bullet)

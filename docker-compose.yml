@@ -10,11 +10,9 @@ services:
 #    environment:
 #      - API_URL=http://alexcristea.sytes.net:8081/
   server:
-    build: serverold
+    image: node:14
     ports:
       - 8081:8081
-    volumes:
-      - ./server:/data
     depends_on: 
       - server-database
     environment:

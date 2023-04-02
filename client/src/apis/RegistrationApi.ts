@@ -1,12 +1,12 @@
 import type {User} from "@/types/types";
-import type {AxiosError, AxiosResponse} from "axios";
-import axios from "../axios";
+import type {AxiosError, AxiosResponse, AxiosStatic} from "axios";
 import {store} from "@/stores/store";
 import router from "@/router";
+import http from "@/axios";
 
 export default class RegistrationApi {
     static login(user: User): void {
-        axios.post('/client/login', {
+        http.post('/client/login', {
             email: user.email,
             password: user.password
         }).then(response => {
@@ -20,11 +20,12 @@ export default class RegistrationApi {
     }
 
     static register(user: User):void {
-        axios.post('/client/register', {
+        http.post('/client/register', {
             ...user
         }).then((response: AxiosResponse) => {
             store.commit('setToken', response.data.token);
             store.commit('setUser', response.data.user);
+            store.commit('setIoClient', response.data.token)
             window.location.href = '/';
         }).catch((e: AxiosError) => {
             if (e.response?.data?.errors) {

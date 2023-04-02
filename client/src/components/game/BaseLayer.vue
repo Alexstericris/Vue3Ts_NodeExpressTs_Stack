@@ -1,6 +1,8 @@
 <script lang="ts">
 import {defineComponent} from "vue";
 import {mapState} from "vuex";
+import GameHelper from "@/helpers/GameHelper";
+import type {Bullet} from "@/types/gametypes";
 
 export default defineComponent({
   name: 'BaseLayer',
@@ -35,7 +37,7 @@ export default defineComponent({
       let ratio = this.bulletVelocity / a;
       let xVelocity = ratio * b
       let yVelocity = ratio * c
-      let bullet = {
+      let bullet:Bullet = {
         xAxis: this.character.position.xAxis,
         yAxis: this.character.position.yAxis,
         xTo: xTo,
@@ -45,6 +47,7 @@ export default defineComponent({
         color: this.character.attributes.color,
         character_id: this.character._id,
         size: 10,
+        damage:10
       }
       // console.log("shootBullet")
       this.socket.emit('shootBullet',bullet)

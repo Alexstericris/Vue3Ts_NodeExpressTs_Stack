@@ -2,6 +2,8 @@
 import {defineComponent} from "vue";
 import RegistrationApi from "@/apis/RegistrationApi";
 import type { LoginFormSubmitTarget, User} from "@/types/types";
+import {store} from "@/stores/store";
+import router from "@/router";
 export default defineComponent({
   props:{
   },
@@ -11,13 +13,13 @@ export default defineComponent({
   },
   methods: {
       attemptLogin($event: Event): void {
-          let formTarget=$event.target as LoginFormSubmitTarget|null
-          let user: User = {
-            email: String(formTarget?.elements?.email.value),
-            password: String(formTarget?.elements?.password.value)
+        let formTarget = $event.target as LoginFormSubmitTarget | null
+        let user: User = {
+          email: String(formTarget?.elements?.email.value),
+          password: String(formTarget?.elements?.password.value)
         };
-      RegistrationApi.login(user)
-    },
+        RegistrationApi.login(user)
+      },
   }
 })
 </script>

@@ -28,7 +28,8 @@ export default defineComponent({
             maxVelocity: 10,
             heading: '',
             gameLoop: null,
-            mainSVG:document.getElementById('mainSVG')
+            mainSVG:document.getElementById('mainSVG'),
+          hitOpacity:0
         }
     },
     computed: {
@@ -47,7 +48,7 @@ export default defineComponent({
         let keyDownHandler=(event:KeyboardEvent)=>{
             event.preventDefault();
             if(event.key==="Escape"){
-                window.removeEventListener('keydown',keyDownHandler,false)
+                document.removeEventListener('keydown',keyDownHandler,false)
             }
             if (event.key === 'ArrowUp' || event.key === 'w') {
                 this.yDir = 'up';
@@ -66,7 +67,7 @@ export default defineComponent({
         let keyUpHandler=(event:KeyboardEvent)=>{
             event.preventDefault();
             if(event.key==="Escape"){
-                window.removeEventListener('keydown',keyUpHandler,false)
+                document.removeEventListener('keydown',keyUpHandler,false)
             }
             if (['ArrowUp', 'ArrowDown', 'w', 's'].includes(event.key)) {
                 this.yDir = '';
@@ -75,19 +76,28 @@ export default defineComponent({
                 this.xDir = '';
             }
         }
-        window.addEventListener("keydown",keyDownHandler);
-        window.addEventListener("keyup",keyUpHandler);
+        document.addEventListener("keydown",keyDownHandler);
+        document.addEventListener("keyup",keyUpHandler);
     },
     methods: {
-        loop() {
-            this.ticks++
-            this.update()
-            requestAnimationFrame(this.loop)
-        },
+      loop() {
+        this.ticks++
+        this.update()
+        this.isHit();
+        requestAnimationFrame(this.loop)
+      },
         setStartingPosition() {
             this.xAxis = this.character.position.xAxis;
             this.yAxis = this.character.position.yAxis;
         },
+      isHit() {
+        if (this.character.isHit&&this.hitOpacity<=0) {
+          this.hitOpacity=0.7
+        }
+        if (this.hitOpacity>0) {
+          this.hitOpacity -= 0.02;
+        }
+      },
         update() {
             if (this.inputs) {
                 if (this.ticks % this.ticksRate === 0) {
@@ -158,16 +168,35 @@ export default defineComponent({
           }
           this.$store.commit("gameStore/setCharacterPosition", position)
           this.socket.emit('positionUpdated', this.character._id, position)
-        }
+        },
+      getHealthPercentage() {
+        return this.character.attributes.health_points / this.character.attributes.max_health_points;
+      },
     }
 });
 </script>
 <template>
+  <g>
+    <rect class="hitOverlay" x="0" y="0" width="100%" height="100%" :fill="'rgba(255, 0, 0,'+hitOpacity+ ')'"></rect>
     <circle ref="player" :fill="character.attributes.color"
             :cx="xAxis"
             :cy="yAxis"
             :r="character.attributes.size"/>
-</template>
-<style scoped>
+    <template v-if="character.attributes.health_points<character.attributes.max_health_points">
+      <rect :x="xAxis -character.attributes.size"
+            :y="yAxis+ character.attributes.size +10"
+            :width="character.attributes.size*2"
+            height="10" fill="#ff0000">
 
+      </rect>
+      <rect :x="xAxis -character.attributes.size"
+            :y="yAxis+ character.attributes.size +10"
+            :width="character.attributes.size*2*getHealthPercentage()"
+            height="10" fill="#00ff00"></rect>
+    </template>
+  </g>
+</template>
+<style scoped lang="sass">
+.hitOverlay
+  transition: opacity 1s ease-out
 </style>

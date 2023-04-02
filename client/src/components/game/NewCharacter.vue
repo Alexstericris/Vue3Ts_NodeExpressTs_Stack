@@ -22,7 +22,7 @@ export default defineComponent({
     },
     methods: {
         newCharacter() {
-            GameApi.createCharacter(this.character).then(() => {
+          GameApi.createCharacter(this.character).then(() => {
                 this.modal.hide()
             }).catch(() => {
                 this.$store.commit('toast/error', 'Failed to create character')

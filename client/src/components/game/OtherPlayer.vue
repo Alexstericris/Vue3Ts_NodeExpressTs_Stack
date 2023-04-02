@@ -14,7 +14,7 @@ export default defineComponent({
 });
 </script>
 <template>
-    <circle ref="player" :fill="character.attributes.color"
+    <circle :id="'player'+character._id" :fill="character.attributes.color"
             :cx="character.position.xAxis"
             :cy="character.position.yAxis"
             :r="character.attributes.size"/>
