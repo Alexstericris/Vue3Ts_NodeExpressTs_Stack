@@ -10,6 +10,8 @@ export default defineComponent({
             character: {
                 color: '',
                 size: 50,
+              max_health_points:100,
+              health_points:100
             },
             modal: {} as Modal
         }

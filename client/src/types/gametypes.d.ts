@@ -1,4 +1,4 @@
-export interface CharacterAttributes {
+export interface  CharacterAttributes {
     color: string,
     size: number,
     max_health_points:number,
