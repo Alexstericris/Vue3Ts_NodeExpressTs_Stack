@@ -29,7 +29,7 @@ export default defineComponent({
       if (!res.data.length) {
         this.$router.push("characters")
       }
-      this.$store.commit("gameStore/setCharacter", res.data.slice(-1));
+      this.$store.commit("gameStore/setCharacter", res.data.slice(-1)[0]);
     });
     this.socket.emit('pendingGameJoin', this.character);
     this.socket.on('playerJoined', (characters: CharactersCollection) => {
