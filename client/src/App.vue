@@ -72,6 +72,9 @@ a, .green
   color: hsla(160, 100%, 37%, 1)
   transition: 0.4s
 
+#app a
+  color: rgba(0,0,0,0.55)
+
 .display-7
   font-size: 2rem
 

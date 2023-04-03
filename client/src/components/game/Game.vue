@@ -26,7 +26,10 @@ export default defineComponent({
   },
   beforeCreate: async function () {
     await GameApi.getCharacters().then(res => {
-      this.$store.commit("gameStore/setCharacter", res.data[0])
+      if (!res.data.length) {
+        this.$router.push("characters")
+      }
+      this.$store.commit("gameStore/setCharacter", res.data.slice(-1));
     });
     this.socket.emit('pendingGameJoin', this.character);
     this.socket.on('playerJoined', (characters: CharactersCollection) => {
