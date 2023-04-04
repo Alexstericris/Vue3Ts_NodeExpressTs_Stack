@@ -24,8 +24,9 @@ export default defineComponent({
     },
     methods: {
         newCharacter() {
-          GameApi.createCharacter(this.character).then(() => {
+          GameApi.createCharacter(this.character).then((response) => {
                 this.modal.hide()
+            this.$store.commit("gameStore/setCharacter",response.data)
             }).catch(() => {
                 this.$store.commit('toast/error', 'Failed to create character')
             })

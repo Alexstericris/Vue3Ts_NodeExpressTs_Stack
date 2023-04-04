@@ -2,6 +2,7 @@
 import { defineComponent} from "vue";
 import GameApi from "@/apis/GameApi";
 import type {Character} from "@/types/gametypes";
+import {mapState} from "vuex";
 
 export default defineComponent({
     name: 'CharactersList',
@@ -10,11 +11,24 @@ export default defineComponent({
             characters: [] as Array<Character>,
         }
     },
+  computed: {
+      ...mapState('gameStore',['character'])
+  },
     beforeCreate() {
       GameApi.getCharacters().then(res => {
             this.characters=res.data;
         });
     },
+  watch:{
+      character:{
+        deep: true,
+        handler: function () {
+          GameApi.getCharacters().then(res => {
+            this.characters=res.data;
+          });
+        }
+      }
+  }
 })
 </script>
 <template>
