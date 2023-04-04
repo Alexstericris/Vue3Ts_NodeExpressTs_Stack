@@ -14,10 +14,10 @@ export default defineComponent({
     <main>
         <div class="container mt-5 py-4 text-center">
             <div class="flex flex-wrap justify-content-center">
-                    <a class="btn text-nowrap px-10 mx-2 py-5 bg-light rounded text-decoration-none" href="http://digitalfruit.sytes.net:81">
+                    <a class="btn text-nowrap mt-3 px-10 mx-2 py-5 bg-light rounded text-decoration-none" href="http://digitalfruit.sytes.net:81">
                         Cloud Storage
                     </a>
-                    <RouterLink class="btn text-nowrap mx-2 px-10 py-5 bg-light rounded text-decoration-none"
+                    <RouterLink class="btn text-nowrap mt-3 mx-2 px-10 py-5 bg-light rounded text-decoration-none"
                                 :to="user?'/game':'/login'">
                         Simple Multiplayer Game
                     </RouterLink>

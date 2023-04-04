@@ -22,9 +22,14 @@ import Toast from "@/components/snippets/Toast.vue";
     </div>
   </footer>
 </template>
+<style lang="scss">
+$primary: #2b7c4f;
+@import "bootstrap";
+
+</style>
 
 <style lang="sass">
-@import 'assets/base.css'
+@import 'assets/base'
 
 #app
   position: absolute

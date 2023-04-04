@@ -111,7 +111,7 @@ export default defineComponent({
                 <span class="fs-4 text-shadow display-5 fw-bold text-white">Skills</span>
             </div>
             <div class="row align-items-md-stretch">
-                <div :key="index" v-for="(skill,index) in skills" class="mt-4 col-sm-3">
+                <div :key="index" v-for="(skill,index) in skills" class="mt-4 col-lg-3">
                     <div class="h-100 p-5 bg-light border rounded-3 text-center">
                         <h2>{{ skill.name }}</h2>
                         <img :style="skill.style" :src="getImgSrc(skill.img)">
@@ -127,11 +127,16 @@ export default defineComponent({
     </main>
 
 </template>
-<style scoped>
-.alex-background {
-    background: /*linear-gradient(to right top,rgba(var(--bs-light-rgb),var(--bs-bg-opacity)) 0%, rgba(231, 231, 231, 0.9) 40%, rgba(125, 185, 232, 0) 100%),*/ url("@/assets/schubwerk_alex.jpg") 0px -150px no-repeat;
-    background-size: cover;
-    height: 500px;
-    /*background-position: 100px -150px;*/
-}
+<style scoped lang="sass">
+.alex-background
+  height: 500px
+  @media (min-width: 992px)
+    background: url("@/assets/schubwerk_alex.jpg") 0px -150px no-repeat
+    background-size: cover
+  @media (max-width: 991px)
+    background: url("@/assets/schubwerk_alex.jpg") 0 0 no-repeat
+    background-size: cover
+
+/*background-position: 100px -150px;*/
+
 </style>
