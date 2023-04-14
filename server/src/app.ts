@@ -16,11 +16,14 @@ import cors from "cors";
 import {registerWebRoutes} from "./routes/web";
 import {registerApiRoutes} from "./routes/api";
 import {registerAuthRoutes} from "./routes/auth";
+import process from "process";
 
 // Create Express server
 const app = express();
 
 // Connect to MongoDB
+// console.log("My Env" + JSON.stringify(process.env));
+// console.log(MONGODB_URI);
 const mongoUrl = MONGODB_URI;
 mongoose.Promise = bluebird;
 
@@ -34,8 +37,6 @@ mongoose.connect(mongoUrl, {useNewUrlParser: true, useCreateIndex: true, useUnif
 
 // Express configuration
 app.set("port", process.env.PORT);
-app.set("views", path.join(__dirname, "../views"));
-app.set("view engine", "pug");
 app.use(compression());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));

@@ -1,28 +1,48 @@
 version: "3"
 
 services:
-#  client:
-#    build: ./client
-#    ports:
-#      - 8080:8080
-#    volumes:
-#      - ./client:/data
+  client:
+    build: ./client
+    ports:
+      - 8080:8080
+    volumes:
+      - ./client:/src
+    user: "1000:1000"
+  #      - ./client:/data
 #    environment:
 #      - API_URL=http://alexcristea.sytes.net:8081/
   server:
-    image: node:14
+    build: ./server
+    networks:
+      - mongo_network
     ports:
       - 8081:8081
-    depends_on: 
-      - server-database
-    environment:
-      - DATABASE_URL=server-database:27017
-    
-  server-database:
+    depends_on:
+      - mongo
+    volumes:
+      - ./server:/src
+    user: "1000:1000"
+#    environment:
+#      DATABASE_URL: server-database
+
+  mongo:
     image: mongo
+#    command: mongod --auth
+    networks:
+      - mongo_network
     ports:
       - 27017:27017
     volumes:
+#      - "$PWD/mongo-entrypoint/:/docker-entrypoint-initdb.d/"
       - ./db:/data/db
+#    environment:
+#      - MONGO_INITDB_ROOT_USERNAME=root
+#      - MONGO_INITDB_ROOT_PASSWORD=root
+#      - MONGO_INITDB_DATABASE=apidb
 
-    
+volumes:
+  db:
+
+networks:
+  mongo_network:
+    driver: bridge
