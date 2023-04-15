@@ -2,6 +2,7 @@
 import {RouterView} from 'vue-router'
 import Navigation from "@/components/Navigation.vue";
 import Toast from "@/components/snippets/Toast.vue";
+console.log('i test my deployment')
 </script>
 
 <template>
