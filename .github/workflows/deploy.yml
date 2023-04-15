@@ -12,8 +12,8 @@ jobs:
       - name: executing emote ssh commands
         uses: appleboy/ssh-action@v0.1.10
         with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
+          host: numeriberry.com
+          username: deploy
+          key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCzz7a20h4soi+6TCCxRiMEahC+OVhN3R4LBuXkYC3HGaXKwwULTi3T7u9uBG6pkEsH46DswQEHQST1L1Eu4eoeYtZ7RwOZeQ506fAYCXa3X9MtcRHY7b+QOUHzYZpUVIEMJa9+W0x7qNcNqS3YiFArTDrHURTr2aSbzaZ479KBlq2NX5hcRPC/ferAqzm5SYtOstAXqGFDg5kKr975vNJE6o9xvy8FLA7nBp5w8cFDw1Y/54EUvgOu6EzFyYlxiW/qs+pY1xynEcQd82VnoA/Zz40NulbC4P95/jYFUrnS3CiiXg7ynaA6Bnzkv6mKzuMWk9skohQ6uc8BG2FZxnieWWd95okttXZOvCwg6GGSW9NQ0ojiy8XnHvtUh08dKFr3bxU3PY3VjD8WaSTCZ4QT+/KSNv93/P2eCNAcIn2fxrTfcwNTwTmmfXqRVCgEVjxrgu8j/UblIzCTDenYU1ac6UbI87aNCiwiLVh0OYTCp2qhgopLlukfgtv+oKp0GNM= deploy@digitalfruit
           script: | 
             bash /var/www/html/digitalfruit.sytes.net/web/update.sh
