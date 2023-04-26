@@ -2,7 +2,14 @@ version: "3"
 
 services:
   client:
-    build: ./client
+    build:
+      context: ./client
+      dockerfile: |
+        {% if ENVIRONMENT == 'prod' %}
+        Dockerfile.prod
+        {% else %}
+        Dockerfile.dev
+        {% endif %}
     ports:
       - 8080:8080
     volumes:
@@ -12,7 +19,14 @@ services:
 #    environment:
 #      - API_URL=http://alexcristea.sytes.net:8081/
   server:
-    build: ./server
+    build:
+      context: ./server
+      dockerfile: |
+        {% if ENVIRONMENT == 'prod' %}
+        Dockerfile.prod
+        {% else %}
+        Dockerfile.dev
+        {% endif %}
     networks:
       - mongo_network
     ports:

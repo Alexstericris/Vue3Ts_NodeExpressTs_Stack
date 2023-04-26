@@ -2,7 +2,7 @@
 import {RouterView} from 'vue-router'
 import Navigation from "@/components/Navigation.vue";
 import Toast from "@/components/snippets/Toast.vue";
-console.log('i test my deployment')
+
 </script>
 
 <template>
@@ -26,6 +26,7 @@ console.log('i test my deployment')
 <style lang="scss">
 $primary: #2b7c4f;
 @import "bootstrap";
+@import "bootstrap/dist/css/bootstrap.min.css";
 
 </style>
 

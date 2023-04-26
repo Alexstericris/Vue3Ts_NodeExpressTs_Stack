@@ -27,7 +27,6 @@ export default defineComponent({
                 type="button"
                 id="navbarBurgerDropdown"
                 data-bs-toggle="dropdown"
-                aria-controls="navbarBurgerDropdown"
                 aria-expanded="false"
                 aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
