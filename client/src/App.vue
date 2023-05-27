@@ -18,7 +18,7 @@ import Toast from "@/components/snippets/Toast.vue";
   <footer class="py-2 mt-4 page-footer col-sm-12 text-muted text-center bg-white border-top">
     <div class="container">
       <div>
-        © Digital Fruit 2021
+        ©Sterian-Alexandru Cristea 2021
       </div>
     </div>
   </footer>
