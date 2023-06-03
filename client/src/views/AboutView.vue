@@ -100,7 +100,7 @@ export default defineComponent({
                             as a full stack developer.
                         </p>
                         <p class="text-shadow-2 fs-5">Studying Computer Science at
-                            <a class="text-decoration-none text-light-green" href="https://schubwerk.de">Johannes Gutenberg University</a>
+                            <a class="text-decoration-none text-light-green" href="https://startseite.uni-mainz.de/">Johannes Gutenberg University</a>
                             since 2020.
                         </p>
                         <!--                    <button class="btn btn-primary btn-lg" type="button">Example button</button>-->
