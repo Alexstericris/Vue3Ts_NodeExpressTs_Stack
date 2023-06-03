@@ -73,6 +73,7 @@ header
 .page-footer
   position: fixed
   bottom: 0px
+  user-select: none
 
 a, .green
   text-decoration: none
