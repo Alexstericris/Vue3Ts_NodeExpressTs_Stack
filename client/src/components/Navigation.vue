@@ -46,7 +46,7 @@ export default defineComponent({
               <RouterLink class="nav-link dropdown-item" to="/characters">Characters</RouterLink>
             </li>
             <li>
-              <RouterLink class="nav-link dropdown-item" to="/login" @click="logout">Logout</RouterLink>
+              <RouterLink class="nav-link dropdown-item user-select-none" to="/login" @click="logout">Logout</RouterLink>
             </li>
           </template>
           <template v-else>
