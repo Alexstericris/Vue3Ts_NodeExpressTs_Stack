@@ -14,7 +14,7 @@ export default defineComponent({
     <main>
         <div class="container mt-5 py-4 text-center">
             <div class="flex flex-wrap justify-content-center">
-                    <a class="btn text-nowrap mt-3 px-10 mx-2 py-5 bg-light rounded text-decoration-none" href="https://numeriqberry.com">
+                    <a class="btn text-nowrap mt-3 px-10 mx-2 py-5 bg-light rounded text-decoration-none" href="https://www.numeriqberry.com">
                         Cloud Storage
                     </a>
                     <RouterLink class="btn text-nowrap mt-3 mx-2 px-10 py-5 bg-light rounded text-decoration-none"
