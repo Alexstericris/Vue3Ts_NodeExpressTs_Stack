@@ -26,4 +26,4 @@ jobs:
           SSH_KEY: ${{ secrets.STAGING_SSH_KEY }}
           SSH_HOST: ${{ secrets.STAGING_SSH_HOST }}
       - name: Stop the server
-        run: ssh production "bash -s" < /var/www/html/digitalfruit.sytes.net/web/update.sh
+        run: ssh production "bash -s" < ./update.sh
