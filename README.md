@@ -1,7 +1,12 @@
-# Game
+# Portfolio
 Vue, Node, Mongodb, Typescript
 
-### Steps to Run
+### Run with docker
+1. Install docker & docker-compose
+2. Configure  .env in client & server
+3. Run docker-compose up
+
+### Run without docker
 
 1. Install Mongodb
 

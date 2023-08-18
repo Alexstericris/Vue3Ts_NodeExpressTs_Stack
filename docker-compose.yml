@@ -4,12 +4,7 @@ services:
   client:
     build:
       context: ./client
-      dockerfile: |
-        {% if ENVIRONMENT == 'prod' %}
-        Dockerfile.prod
-        {% else %}
-        Dockerfile.dev
-        {% endif %}
+      dockerfile:  "Dockerfile_$ENVIRONMENT"
     ports:
       - 8080:8080
     volumes:
@@ -21,12 +16,7 @@ services:
   server:
     build:
       context: ./server
-      dockerfile: |
-        {% if ENVIRONMENT == 'prod' %}
-        Dockerfile.prod
-        {% else %}
-        Dockerfile.dev
-        {% endif %}
+      dockerfile: Dockerfile
     networks:
       - mongo_network
     ports:
