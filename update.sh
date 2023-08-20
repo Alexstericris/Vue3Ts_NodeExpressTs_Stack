@@ -1,5 +1,6 @@
 #don't run local
 cd /var/www/html/digitalfruit.sytes.net/web
+sudo -u www-data git reset --hard
 sudo -u www-data git pull
 cd /var/www/html/digitalfruit.sytes.net/web/client
 sudo -u www-data npm install
