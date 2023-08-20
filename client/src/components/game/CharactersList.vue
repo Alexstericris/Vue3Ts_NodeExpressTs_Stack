@@ -41,7 +41,7 @@ export default defineComponent({
         this.$store.commit("gameStore/setSelectedCharacter",response.data)
       })
     },
-    isSelected(characterId) {
+    isSelected(characterId:string|undefined) {
       return this.selectedCharacter._id && this.selectedCharacter._id === characterId;
     },
   },
