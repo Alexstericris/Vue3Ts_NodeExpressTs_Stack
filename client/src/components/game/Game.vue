@@ -5,16 +5,15 @@ import Player from "@/components/game/Player.vue";
 import OtherPlayer from "@/components/game/OtherPlayer.vue";
 import GameApi from "@/apis/GameApi";
 import {mapState} from "vuex";
-import type {Character,Bullet as BulletType, CharactersCollection, Position} from "@/types/gametypes";
-import {Socket} from "socket.io-client";
-import Crosshair from "@/components/game/Crosshair.vue";
+import type {Character, CharactersCollection, Position} from "@/types/gametypes";
 import Bullets from "@/components/game/Bullets.vue";
+import CrossHair from "@/components/game/CrossHair.vue";
 // import BaseCanvasLayer from "@/components/game/BaseCanvasLayer.vue";
 // import TestCanvasLayer from "@/components/game/TestCanvasLayer.vue";
 
 export default defineComponent({
   name: 'Game',
-  components: {Crosshair, Bullets, Player, BaseLayer, OtherPlayer},
+  components: {CrossHair, Bullets, Player, BaseLayer, OtherPlayer},
   data() {
     return {
       otherCharacters: {} as CharactersCollection,
@@ -25,11 +24,11 @@ export default defineComponent({
     ...mapState('gameStore', ['character', 'bullets'])
   },
   beforeCreate: async function () {
-    await GameApi.getCharacters().then(res => {
-      if (!res.data.length) {
+    await GameApi.getSelectedCharacter().then(res => {
+      if (!res.data) {
         this.$router.push("characters")
       }
-      this.$store.commit("gameStore/setCharacter", res.data.slice(-1)[0]);
+      this.$store.commit("gameStore/setCharacter", res.data);
     });
     this.socket.emit('pendingGameJoin', this.character);
     this.socket.on('playerJoined', (characters: CharactersCollection) => {
@@ -61,7 +60,7 @@ export default defineComponent({
     <BaseLayer>
       <template v-if="character?._id">
         <Player :character="character"></Player>
-        <Crosshair></Crosshair>
+        <CrossHair></CrossHair>
       </template>
       <Bullets></Bullets>
       <template :key="characterId" v-for="(otherCharacter,characterId) in otherCharacters">

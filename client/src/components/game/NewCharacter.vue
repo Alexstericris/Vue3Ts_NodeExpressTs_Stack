@@ -22,16 +22,17 @@ export default defineComponent({
             this.modal = new Modal(modal, {});
         }
     },
-    methods: {
-        newCharacter() {
-          GameApi.createCharacter(this.character).then((response) => {
-                this.modal.hide()
-            this.$store.commit("gameStore/setCharacter",response.data)
-            }).catch(() => {
-                this.$store.commit('toast/error', 'Failed to create character')
-            })
-        },
-    }
+  methods: {
+    newCharacter() {
+      GameApi.createCharacter(this.character).then((response) => {
+        this.modal.hide()
+        this.$store.commit("gameStore/setCharacter", response.data)
+        this.$emit("newCharacter")
+      }).catch(() => {
+        this.$store.commit('toast/error', 'Failed to create character')
+      })
+    },
+  }
 })
 </script>
 

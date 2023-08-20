@@ -3,7 +3,6 @@ import App from './App.vue'
 import router from './router'
 import {key, store} from "@/stores/store";
 import "bootstrap"
-// import "bootstrap/dist/css/bootstrap.min.css"
 
 const app = createApp(App)
 app.use(store,key)

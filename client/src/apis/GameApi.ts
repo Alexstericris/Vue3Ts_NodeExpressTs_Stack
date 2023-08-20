@@ -24,4 +24,22 @@ export default class GameApi{
             ...{_id,position}
         })
     }
+
+    static deleteCharacter(_id:string|undefined) {
+        return http.delete('/api/characters/delete',{
+            params:{
+                _id
+            }
+        })
+    }
+
+    static getSelectedCharacter() {
+        return http.get('/api/characters/selected')
+    }
+
+    static selectCharacter(_id:string|undefined) {
+        return http.post('/api/characters/select', {
+            _id
+        })
+    }
 }

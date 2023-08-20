@@ -5,7 +5,7 @@ import { Request, Response } from "express";
  * @route GET /
  */
 export const index = (req: Request, res: Response) => {
-    return res.send("SERVER")
+    return res.send("SERVER");
     // res.render("home", {
     //     title: "Home"
     // });

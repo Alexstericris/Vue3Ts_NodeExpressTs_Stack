@@ -3,7 +3,7 @@ import {defineComponent} from "vue";
 import {mapState} from "vuex";
 
 export default defineComponent({
-  name: 'Crosshair',
+  name: 'CrossHair',
   data() {
     return {
       centerX: document.getElementById('mainSVG')?.getBoundingClientRect().width,

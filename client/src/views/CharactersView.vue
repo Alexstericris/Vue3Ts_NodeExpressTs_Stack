@@ -18,7 +18,6 @@ export default defineComponent({
 <template>
 <div class="container mt-6 py-4 pt-6 mb-5 bg-white rounded">
     <CharactersList></CharactersList>
-    <NewCharacter></NewCharacter>
 </div>
 </template>
 

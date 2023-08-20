@@ -6,10 +6,6 @@ import {mapState} from "vuex";
 export default defineComponent({
   name: "GameView",
   components: {Game},
-  // data() {
-  //   return{
-  //   }
-  // },
   computed: {
     ...mapState('gameStore',['gameStarted'])
   }
