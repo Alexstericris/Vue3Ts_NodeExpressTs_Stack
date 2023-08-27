@@ -1,22 +1,11 @@
 <script setup lang="ts">
 import {useToastStore} from "@/stores/toastStore";
 import {useStore} from "@/stores/store";
-import {ref} from "vue";
 
 const store=useStore()
 const toast=useToastStore()
 const user = store.user;
-const tests = ref([]);
 
-function add() {
-  tests.value.push({name:'yo'})
-}
-
-function mytest() {
-  let temp=tests.value[0]
-  temp.name="mytest"
-  tests.value[0]=temp
-}
 </script>
 <template>
     <main>
