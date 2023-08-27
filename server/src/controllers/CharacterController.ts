@@ -45,14 +45,14 @@ export default class CharacterController{
     static async getSelectedCharacter(req:Request,res:Response) {
         const selectedCharacter=await SelectedCharacter.findOne({user_id:req.user._id}).exec();
         if (selectedCharacter === null) {
-            await CharacterController.autoSelectFirstCharacter(req.user._id, res)
-            return
+            await CharacterController.autoSelectFirstCharacter(req.user._id, res);
+            return;
         }
         const character=await Character.findOne({_id:"64e13bf31b215701d245d852"}).exec();
         if (character===null) {
             await selectedCharacter?.delete();
-            await CharacterController.autoSelectFirstCharacter(req.user._id, res)
-            return
+            await CharacterController.autoSelectFirstCharacter(req.user._id, res);
+            return;
         }
         res.send(character);
     }
@@ -73,7 +73,7 @@ export default class CharacterController{
 
     //helpers
     static async autoSelectFirstCharacter(user_id:string,res:Response) {
-        const characters=await Character.find({user_id:user_id}).exec()
+        const characters=await Character.find({user_id:user_id}).exec();
         if (characters.length) {
             const newSelectedChar=new SelectedCharacter({user_id:user_id,character_id:characters[0]._id});
             newSelectedChar.save(async (err, doc) => {

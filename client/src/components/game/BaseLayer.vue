@@ -1,59 +1,51 @@
-<script lang="ts">
-import {defineComponent} from "vue";
-import {mapState} from "vuex";
-import GameHelper from "@/helpers/GameHelper";
+<script setup lang="ts">
+import {onMounted, ref} from "vue";
 import type {Bullet} from "@/types/gametypes";
+import {useStore} from "@/stores/store";
+import {useGameStore} from "@/stores/gameStore";
 
-export default defineComponent({
-  name: 'BaseLayer',
-  data() {
-    return {
-      top: 0,
-      left: 0,
-      bulletVelocity:10,
-    }
-  },
-  computed: {
-    ...mapState(['socket']),
-    ...mapState('gameStore', ["character"]),
-  },
-  mounted() {
-    this.top = (this.$refs.mainSVG as SVGElement).getBoundingClientRect().top
-    this.left = (this.$refs.mainSVG as SVGElement).getBoundingClientRect().left
-  },
-  methods: {
-    onMouseMove($event: MouseEvent) {
-      this.$store.commit("gameStore/setCoordinates", {
-        mouseX: $event.clientX - this.left,
-        mouseY: $event.clientY - this.top,
-      })
-    },
-    onClick($event: MouseEvent) {
-      let xTo=$event.clientX - this.left
-      let yTo=$event.clientY - this.top
-      let b = xTo - this.character.position.xAxis
-      let c = yTo - this.character.position.yAxis
-      let a = Math.sqrt(b ** 2 + c ** 2)
-      let ratio = this.bulletVelocity / a;
-      let xVelocity = ratio * b
-      let yVelocity = ratio * c
-      let bullet:Bullet = {
-        xAxis: this.character.position.xAxis,
-        yAxis: this.character.position.yAxis,
-        xTo: xTo,
-        yTo: yTo,
-        xVelocity:xVelocity,
-        yVelocity:yVelocity,
-        color: this.character.attributes.color,
-        character_id: this.character._id,
-        size: 10,
-        damage:10
-      }
-      // console.log("shootBullet")
-      this.socket.emit('shootBullet',bullet)
-    },
+
+const store = useStore();
+const gameStore = useGameStore();
+const top=ref(0)
+const left=ref(0)
+const bulletVelocity=ref(10)
+const mainSVG=ref(null)
+
+onMounted(()=>{
+  top.value=(mainSVG.value as SVGElement).getBoundingClientRect().top
+  left.value=(mainSVG.value as SVGElement).getBoundingClientRect().left
+})
+
+function onMouseMove($event: MouseEvent) {
+  gameStore.mouseX=$event.clientX - left.value
+  gameStore.mouseY=$event.clientY - top.value
+}
+
+function onClick($event: MouseEvent) {
+  let xTo=$event.clientX - left.value
+  let yTo=$event.clientY - top.value
+  let b = xTo - gameStore.character.position.xAxis
+  let c = yTo - gameStore.character.position.yAxis
+  let a = Math.sqrt(b ** 2 + c ** 2)
+  console.log(xTo,yTo,a,b,c)
+  let ratio = bulletVelocity.value / a;
+  let xVelocity = ratio * b
+  let yVelocity = ratio * c
+  let bullet:Bullet = {
+    xAxis: gameStore.character.position.xAxis,
+    yAxis: gameStore.character.position.yAxis,
+    xTo: xTo,
+    yTo: yTo,
+    xVelocity: xVelocity,
+    yVelocity: yVelocity,
+    color: gameStore.character.attributes.color,
+    character_id: gameStore.character._id,
+    size: 10,
+    damage: 10
   }
-});
+  store.socket.emit('shootBullet',bullet as any)
+}
 </script>
 
 <template>

@@ -1,33 +1,32 @@
-import type {Module} from "vuex";
-import type {State} from "@/stores/store";
+import {defineStore} from "pinia";
 
 export interface toastState {
     show:boolean,
     message:string,
     class:string,
 }
-export const toast :  Module<toastState,State> ={
-    namespaced:true,
-    state: {
+
+export const useToastStore= defineStore('toast',{
+    state:():toastState=>({
         show:false,
         message:'',
         class:'',
-    },
-    mutations:{
-        success(state:toastState,message:string) {
-            state.message=message
-            state.show=true
+    }),
+    actions:{
+        success(message:string) {
+            this.message=message
+            this.show=true
             setTimeout(() => {
-                state.show = false
+                this.show = false
             }, 5000)
         },
-        error(state:toastState,message:string) {
-            state.message=message
-            state.show=true
-            state.class='text-white bg-danger'
+        error(message:string) {
+            this.message=message
+            this.show=true
+            this.class='text-white bg-danger'
             setTimeout(() => {
-                state.show = false
+                this.show = false
             }, 5000)
         },
     }
-}
+})

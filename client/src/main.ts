@@ -1,12 +1,16 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
-import {key, store} from "@/stores/store";
+import {useStore} from "@/stores/store";
 import "bootstrap"
+import { createPinia } from 'pinia'
 
+const pinia = createPinia()
 const app = createApp(App)
-app.use(store,key)
-store.dispatch("getAuthenticatedUser").finally(()=>{
+app.use(pinia)
+
+const store=useStore()
+store.getAuthenticatedUser().then(()=>{
     app.use(router)
     app.mount('#app');
 })

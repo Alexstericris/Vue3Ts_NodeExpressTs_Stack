@@ -1,61 +1,44 @@
-<script lang="ts">
-import { defineComponent} from "vue";
+<script setup lang="ts">
+import {onBeforeMount, ref} from "vue";
 import GameApi from "@/apis/GameApi";
-import type {Character} from "@/types/gametypes";
-import {mapState} from "vuex";
 import NewCharacter from "@/components/game/NewCharacter.vue";
+import {useGameStore} from "@/stores/gameStore";
 
-export default defineComponent({
-    name: 'CharactersList',
-  components: {NewCharacter},
-    data() {
-        return {
-            characters: [] as Array<Character>,
-        }
-    },
-  computed: {
-      ...mapState('gameStore',['selectedCharacter'])
-  },
-  created() {
-    this.getSelectedCharacter();
-    this.getCharacters()
-  },
-  methods: {
-    getCharacters() {
-      GameApi.getCharacters().then(res => {
-        this.characters=res.data;
-      })
-    },
-    getSelectedCharacter() {
-      GameApi.getSelectedCharacter().then(response=>{
-        this.$store.commit("gameStore/setSelectedCharacter",response.data)
-      })
-    },
-    deleteCharacter(_id:string|undefined) {
-      GameApi.deleteCharacter(_id).then(()=>{
-        this.getCharacters();
-      });
-    },
-    selectCharacter(_id:string|undefined) {
-      GameApi.selectCharacter(_id).then(response=>{
-        this.$store.commit("gameStore/setSelectedCharacter",response.data)
-      })
-    },
-    isSelected(characterId:string|undefined) {
-      return this.selectedCharacter._id && this.selectedCharacter._id === characterId;
-    },
-  },
-  watch:{
-      character:{
-        deep: true,
-        handler: function () {
-          GameApi.getCharacters().then(res => {
-            this.characters=res.data;
-          });
-        }
-      }
-  }
+const gameStore = useGameStore();
+const characters=ref([])
+
+onBeforeMount(()=>{
+  getSelectedCharacter();
+  getCharacters();
 })
+
+function getSelectedCharacter() {
+  GameApi.getSelectedCharacter().then(response=>{
+    gameStore.selectedCharacter = response.data;
+  })
+}
+
+function getCharacters() {
+  GameApi.getCharacters().then(res => {
+    characters.value=res.data;
+  })
+}
+
+function deleteCharacter(_id:string|undefined) {
+  GameApi.deleteCharacter(_id).then(()=>{
+    getCharacters();
+  });
+}
+
+function selectCharacter(_id:string|undefined) {
+  GameApi.selectCharacter(_id).then(response=>{
+    gameStore.selectedCharacter = response.data;
+  })
+}
+
+function isSelected(characterId:string|undefined) {
+  return gameStore.selectedCharacter._id && gameStore.selectedCharacter._id === characterId;
+}
 </script>
 <template>
   <div>
@@ -74,7 +57,7 @@ export default defineComponent({
                 <button class="btn btn-primary mb-3"
                         :class="isSelected(character._id)?'disabled':''"
                         @click="selectCharacter(character._id)">
-                  {{isSelected(character._id)?'SELECTED':'SELECT'}}
+                  {{isSelected(character?._id)?'SELECTED':'SELECT'}}
                 </button>
                 <button class="btn btn-danger" @click="deleteCharacter(character._id)">DELETE</button>
               </div>

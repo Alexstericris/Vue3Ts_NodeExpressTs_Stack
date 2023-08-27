@@ -1,8 +1,6 @@
 import HomeView from "@/views/HomeView.vue";
-import {store} from "@/stores/store";
-import type {NavigationGuardNext, RouteLocation, RouteLocationNormalized, RouteRecordRaw} from "vue-router";
-import GameApi from "@/apis/GameApi";
-import type {ComponentPublicInstance} from "vue";
+import type {NavigationGuardNext, RouteLocationNormalized, RouteRecordRaw} from "vue-router";
+import {useStore} from "@/stores/store";
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -19,7 +17,8 @@ const routes: Array<RouteRecordRaw> = [
         path: "/game",
         component: () => import('../views/GameView.vue'),
         beforeEnter: (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
-            if (!store.state.user) {
+            const store = useStore();
+            if (!store.user) {
                 next(from)
             } else {
                 next()
@@ -32,7 +31,8 @@ const routes: Array<RouteRecordRaw> = [
         beforeEnter: (to: RouteLocationNormalized,
                       from: RouteLocationNormalized,
                       next: NavigationGuardNext) => {
-            if (!store.state.user) {
+            const store = useStore();
+            if (!store.user) {
                 next(from)
             } else {
                 next()
@@ -43,7 +43,8 @@ const routes: Array<RouteRecordRaw> = [
         path: "/login",
         component: () => import('../views/LoginView.vue'),
         beforeEnter: (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
-            if (store.state.token.length > 15) {
+            const store = useStore();
+            if (store.token.length > 15) {
                 next(from)
             } else {
                 next()
@@ -54,7 +55,8 @@ const routes: Array<RouteRecordRaw> = [
         path: "/register",
         component: () => import('../views/RegisterView.vue'),
         beforeEnter: (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
-            if (store.state.token.length > 15) {
+            const store = useStore();
+            if (store.token.length > 15) {
                 next(from)
             } else {
                 next()

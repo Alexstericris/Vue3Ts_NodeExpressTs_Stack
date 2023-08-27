@@ -1,24 +1,15 @@
-<script lang="ts">
-import {defineComponent} from "vue";
+<script setup lang="ts">
 import RegistrationApi from "@/apis/RegistrationApi";
 
-export default defineComponent({
-    data() {
-        return {
-            user: {
-                username: '',
-                email: '',
-                password: '',
-                confirmPassword: '',
-            }
-        }
-    },
-    methods: {
-      register() {
-        RegistrationApi.register(this.user);
-      },
-    }
-})
+const user = {
+  username: '',
+  email: '',
+  password: '',
+  confirmPassword: '',
+};
+function register() {
+  RegistrationApi.register(this.user);
+}
 </script>
 <template>
     <div class="container">

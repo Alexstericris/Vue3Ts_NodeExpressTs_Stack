@@ -20,7 +20,7 @@ export interface Character {
 
 export interface Bullet {
     color: string,
-    character_id: string,
+    character_id?: string,
     size: number,
     xAxis: number,
     yAxis: number,

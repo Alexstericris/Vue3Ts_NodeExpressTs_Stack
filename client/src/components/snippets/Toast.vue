@@ -1,6 +1,7 @@
 <script lang="ts">
 import {defineComponent} from "vue";
-import {mapState} from "vuex";
+import {useToastStore} from "@/stores/toastStore";
+import {mapState} from "pinia";
 
 export default defineComponent({
     name:"Toast",
@@ -8,21 +9,21 @@ export default defineComponent({
         return{
         }
     },
-    computed: {
-        ...mapState('toast',['show','message','class']),
-        toastClass() {
-            let toastClass = '';
-            if (this.show) {
-                toastClass += 'show';
-            }else{
-                toastClass += 'hide';
-            }
-            if (this.class) {
-                toastClass += ' ' + this.class;
-            }
-            return toastClass
-        },
+  computed: {
+    ...mapState(useToastStore, ['show', 'message', 'class']),
+    toastClass() {
+      let toastClass = '';
+      if (this.show) {
+        toastClass += 'show';
+      } else {
+        toastClass += 'hide';
+      }
+      if (this.class) {
+        toastClass += ' ' + this.class;
+      }
+      return toastClass
     },
+  },
     methods:{
 
     }
@@ -30,7 +31,7 @@ export default defineComponent({
 </script>
 <template>
 <!--    <div aria-live="polite" aria-atomic="true" class="position-relative">-->
-        <div class="toast-container position-fixed p3" style="right:30px;bottom:30px">
+        <div class="toast-container position-fixed p3" style="z-index:1;right:30px;bottom:30px">
             <div class="toast fade align-items-center" :class="toastClass"
                  role="alert"
                  aria-live="assertive"

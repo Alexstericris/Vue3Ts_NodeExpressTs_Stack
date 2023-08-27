@@ -1,33 +1,29 @@
-<script lang="ts">
-import {defineComponent} from "vue";
-import {mapState} from "vuex";
+<script setup lang="ts">
+import {onMounted, ref, watch} from "vue";
+import {useGameStore} from "@/stores/gameStore";
 
-export default defineComponent({
-  name: 'CrossHair',
-  data() {
-    return {
-      centerX: document.getElementById('mainSVG')?.getBoundingClientRect().width,
-      centerY: document.getElementById('mainSVG')?.getBoundingClientRect().height,
-      size: 20
-    }
-  },
-  mounted() {
-    this.centerX = this.centerX ? this.centerX / 2 : 0;
-    this.centerY = this.centerY ? this.centerY / 2 : 0;
+const gameStore=useGameStore()
+const centerX=ref()
+const centerY=ref()
+const size=ref(20)
 
-  },
-  computed: {
-    ...mapState('gameStore', ["mouseX", "mouseY"])
-  },
-  watch:{
-    mouseX(newCenterX) {
-      this.centerX=newCenterX
-    },
-    mouseY(newCenterY) {
-      this.centerY=newCenterY
-    }
-  }
+onMounted(() => {
+  centerX.value=document.getElementById('mainSVG')?.getBoundingClientRect().width
+  centerY.value=document.getElementById('mainSVG')?.getBoundingClientRect().height
+  centerX.value = centerX.value ? (centerX.value / 2) : 0
+  centerY.value = centerY.value ? (centerY.value / 2) : 0
 })
+
+watch(()=> gameStore.mouseX,
+    (newValue) => {
+        centerX.value=newValue as number
+    })
+
+watch(()=> gameStore.mouseY,
+    (newValue) => {
+        centerY.value=newValue as number
+    })
+
 </script>
 
 <template>

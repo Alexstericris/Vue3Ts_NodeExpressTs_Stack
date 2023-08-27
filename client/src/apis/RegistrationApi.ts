@@ -1,18 +1,20 @@
 import type {User} from "@/types/types";
-import type {AxiosError, AxiosResponse, AxiosStatic} from "axios";
-import {store} from "@/stores/store";
+import type {AxiosError, AxiosResponse} from "axios";
 import router from "@/router";
 import http from "@/axios";
+import {useStore} from "@/stores/store";
+import {useToastStore} from "@/stores/toastStore";
+
 
 export default class RegistrationApi {
     static login(user: User): void {
+        const store=useStore()
         http.post('/client/login', {
             email: user.email,
             password: user.password
         }).then(response => {
-            store.commit('setToken', response.data.token);
-            store.commit('setUser', response.data.user);
-            store.commit('setIoClient', response.data.token)
+            store.setToken(response.data.token)
+            store.user= response.data.user
             router.push('/')
         }).catch(e => {
             console.log(e)
@@ -20,18 +22,19 @@ export default class RegistrationApi {
     }
 
     static register(user: User):void {
+        const store=useStore()
+        const toast = useToastStore();
         http.post('/client/register', {
             ...user
         }).then((response: AxiosResponse) => {
-            store.commit('setToken', response.data.token);
-            store.commit('setUser', response.data.user);
-            store.commit('setIoClient', response.data.token)
+            store.setToken(response.data.token)
+            store.user= response.data.user
             window.location.href = '/';
         }).catch((e: AxiosError) => {
             if (e.response?.data?.errors) {
                 console.log(e.response.data.errors)
                 e.response.data.errors.forEach((e:any) => {
-                    store.commit('toast/error', e?.msg)
+                    toast.error(e?.msg)
                 });
             }
 
@@ -39,7 +42,8 @@ export default class RegistrationApi {
     }
 
     static logout() {
-        store.commit('setToken', '')
-        store.commit('setUser', undefined);
+        const store=useStore()
+        store.setToken('')
+        store.user = {} as User;
     }
 }

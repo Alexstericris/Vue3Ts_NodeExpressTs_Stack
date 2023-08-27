@@ -1,14 +1,15 @@
 import type {Character, CharacterAttributes, Position} from "@/types/gametypes";
-import {store} from "@/stores/store";
+import {useStore} from "@/stores/store";
 import http from "@/axios";
 // import {axiosGet, axiosPatch} from "@/axios";
 
 export default class GameApi{
     static createCharacter(characterAttributes: CharacterAttributes) {
+        const store=useStore()
         const character: Character = {
             attributes: characterAttributes,
             position: {xAxis: characterAttributes.size, yAxis: characterAttributes.size},
-            user_id: store.state.user?._id
+            user_id: store.user?._id
         };
         return http.post('/api/characters/create', {
             ...{character}

@@ -1,25 +1,18 @@
-<script lang="ts">
-import {defineComponent} from "vue";
+<script setup lang="ts">
 import Game from "@/components/game/Game.vue";
-import {mapState} from "vuex";
+import {useGameStore} from "@/stores/gameStore";
 
-export default defineComponent({
-  name: "GameView",
-  components: {Game},
-  computed: {
-    ...mapState('gameStore',['gameStarted'])
-  }
-})
+const gameStore = useGameStore();
 </script>
 
 <template>
   <div>
-    <div v-if="!gameStarted" class="container mt-6 text-center">
-      <button  @click="$store.commit('gameStore/setGameStarted',true)" class="btn bg-white top-100">
+    <div v-if="!gameStore.gameStarted" class="container mt-6 text-center">
+      <button  @click="gameStore.gameStarted=true" class="btn bg-white top-100">
         Start
       </button>
     </div>
-    <Game v-if="gameStarted"></Game>
+    <Game v-if="gameStore.gameStarted"></Game>
   </div>
 </template>
 

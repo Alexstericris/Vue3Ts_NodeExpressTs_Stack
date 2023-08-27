@@ -1,179 +1,174 @@
-<script lang="ts">
-import {defineComponent} from "vue";
-import type {PropType} from "vue";
+<script setup lang="ts">
+import {computed, onMounted, ref} from "vue";
 import type {Character} from "@/types/gametypes";
-import GameApi from "@/apis/GameApi";
-import {mapState} from "vuex";
+import {useStore} from "@/stores/store";
+import {useGameStore} from "@/stores/gameStore";
 
-export default defineComponent({
-    name:'Player',
-    props: {
-        character: {
-            type:Object as PropType<Character>,
-            required:true
-        },
-    },
-    data() {
-        return {
-            playerSize:50,
-            xAxis: 100,
-            yAxis: 100,
-            xDir: '',
-            yDir: '',
-            direction: '',
-            ticks: 0,
-            ticksRate:10,
-            acceleration: 1,
-            velocity: 0,
-            maxVelocity: 10,
-            heading: '',
-            gameLoop: null,
-            mainSVG:document.getElementById('mainSVG'),
-          hitOpacity:0
-        }
-    },
-    computed: {
-        ...mapState(['socket']),
-        inputs() {
-            return this.xDir || this.yDir;
-        },
-        noInputs() {
-            return !this.xDir && !this.yDir;
-        },
+const props=defineProps<{
+  character:Character
+}>()
 
-    },
-    created() {
-        this.setStartingPosition();
-        this.loop();
-        let keyDownHandler=(event:KeyboardEvent)=>{
-            event.preventDefault();
-            if(event.key==="Escape"){
-                document.removeEventListener('keydown',keyDownHandler,false)
-            }
-            if (event.key === 'ArrowUp' || event.key === 'w') {
-                this.yDir = 'up';
-            }
-            if (event.key === 'ArrowLeft' || event.key === 'a') {
-                this.xDir = 'left';
-            }
-            if (event.key === 'ArrowDown' || event.key === 's') {
-                this.yDir = 'down';
-            }
-            if (event.key === 'ArrowRight' || event.key === 'd') {
-                this.xDir = 'right';
-            }
-            this.direction = this.yDir + this.xDir;
-        }
-        let keyUpHandler=(event:KeyboardEvent)=>{
-            event.preventDefault();
-            if(event.key==="Escape"){
-                document.removeEventListener('keydown',keyUpHandler,false)
-            }
-            if (['ArrowUp', 'ArrowDown', 'w', 's'].includes(event.key)) {
-                this.yDir = '';
-            }
-            if (['ArrowLeft', 'ArrowRight', 'a', 'd'].includes(event.key)) {
-                this.xDir = '';
-            }
-        }
-        document.addEventListener("keydown",keyDownHandler);
-        document.addEventListener("keyup",keyUpHandler);
-    },
-    methods: {
-      loop() {
-        this.ticks++
-        this.update()
-        this.isHit();
-        requestAnimationFrame(this.loop)
-      },
-        setStartingPosition() {
-            this.xAxis = this.character.position.xAxis;
-            this.yAxis = this.character.position.yAxis;
-        },
-      isHit() {
-        if (this.character.isHit&&this.hitOpacity<=0) {
-          this.hitOpacity=0.7
-        }
-        if (this.hitOpacity>0) {
-          this.hitOpacity -= 0.02;
-        }
-      },
-        update() {
-            if (this.inputs) {
-                if (this.ticks % this.ticksRate === 0) {
-                    if (this.velocity < this.maxVelocity) {
-                        this.velocity += this.acceleration
-                    } else {
-                        this.velocity = this.maxVelocity;
-                    }
-                }
-                this.movePlayer()
-            } else if (this.direction) {
-                this.movePlayer()
-                if (this.ticks % this.ticksRate === 0) {
-                    if (this.velocity > 0) {
-                        this.velocity -= this.acceleration
-                    } else {
-                        this.velocity = 0;
-                        this.direction = '';
-                    }
-                }
-            }
-        },
-        movePlayer() {
-            let positionChanged=false
-            if (this.direction.includes('up')) {
-                if(this.yAxis - this.velocity < 50){
-                    this.yAxis=this.playerSize
-                }else{
-                    this.yAxis -= this.velocity;
-                }
-                positionChanged=true
-            }
-            if (this.direction.includes('left')) {
-                if(this.xAxis - this.velocity < 50){
-                    this.xAxis=this.playerSize
-                }else{
-                    this.xAxis -= this.velocity;
-                }
-                positionChanged=true
-            }
-            if (this.direction.includes('down')) {
-                if(this.yAxis + this.velocity > 670){
-                    this.yAxis=670
-                }else{
-                    this.yAxis += this.velocity;
-                }
-                positionChanged=true
-            }
-            if (this.direction.includes('right')) {
-                let gameWidth = document.getElementById('mainSVG')?.getBoundingClientRect().width;
-                if(gameWidth){
-                    if(this.xAxis + this.velocity > (gameWidth-this.playerSize)){
-                        this.xAxis=gameWidth-this.playerSize
-                    }else{
-                        this.xAxis += this.velocity;
-                    }
-                    positionChanged=true
-                }
-            }
-            if(positionChanged){
-                this.persistPosition();
-            }
-        },
-        persistPosition(){
-          let position={
-            xAxis:this.xAxis,
-            yAxis:this.yAxis
-          }
-          this.$store.commit("gameStore/setCharacterPosition", position)
-          this.socket.emit('positionUpdated', this.character._id, position)
-        },
-      getHealthPercentage() {
-        return this.character.attributes.health_points / this.character.attributes.max_health_points;
-      },
+const store = useStore();
+const gameStore = useGameStore();
+const playerSize = ref(50);
+const xAxis = ref(100);
+const yAxis = ref(100);
+const xDir=ref('');
+const yDir=ref('');
+const direction = ref('');
+const ticks = ref(0);
+const ticksRate = ref(10);
+const acceleration = ref(1);
+const velocity = ref(0);
+const maxVelocity= ref(10);
+const heading=ref('');
+const gameLoop=ref(null);
+const mainSVG = ref(document.getElementById('mainSVG'));
+const hitOpacity = ref(0);
+const inputs=computed(()=>{
+  return xDir.value||yDir.value
+})
+const noInputs=computed(()=>{
+  return !xDir.value&&!yDir.value
+})
+
+function loop() {
+  ticks.value++
+  update()
+  isHit();
+  requestAnimationFrame(loop)
+}
+
+function setStartingPosition() {
+  xAxis.value = props.character.position.xAxis;
+  yAxis.value = props.character.position.yAxis;
+}
+
+function isHit() {
+  if (props.character.isHit&&hitOpacity.value<=0) {
+    hitOpacity.value=0.7
+  }
+  if (hitOpacity.value>0) {
+    hitOpacity.value -= 0.02;
+  }
+}
+
+function persistPosition(){
+  let position={
+    xAxis:xAxis.value,
+    yAxis:yAxis.value
+  }
+  gameStore.character.position = position;
+  store.socket.emit('positionUpdated', props.character._id as any, position as any)
+}
+
+
+function movePlayer() {
+  let positionChanged=false
+  if (direction.value.includes('up')) {
+    if(yAxis.value - velocity.value < 50){
+      yAxis.value=playerSize.value
+    }else{
+      yAxis.value -= velocity.value;
     }
-});
+    positionChanged=true
+  }
+  if (direction.value.includes('left')) {
+    if(xAxis.value - velocity.value < 50){
+      xAxis.value=playerSize.value
+    }else{
+      xAxis.value -= velocity.value;
+    }
+    positionChanged=true
+  }
+  if (direction.value.includes('down')) {
+    if(yAxis.value + velocity.value > 670){
+      yAxis.value=670
+    }else{
+      yAxis.value += velocity.value;
+    }
+    positionChanged=true
+  }
+  if (direction.value.includes('right')) {
+    let gameWidth = document.getElementById('mainSVG')?.getBoundingClientRect().width;
+    if(gameWidth){
+      if(xAxis.value + velocity.value > (gameWidth-playerSize.value)){
+        xAxis.value=gameWidth-playerSize.value
+      }else{
+        xAxis.value += velocity.value;
+      }
+      positionChanged=true
+    }
+  }
+  if(positionChanged){
+    persistPosition();
+  }
+}
+
+function getHealthPercentage() {
+  return props.character.attributes.health_points / props.character.attributes.max_health_points;
+}
+function update() {
+  if (inputs.value) {
+    if (ticks.value % ticksRate.value === 0) {
+      if (velocity.value < maxVelocity.value) {
+        velocity.value += acceleration.value
+      } else {
+        velocity.value = maxVelocity.value;
+      }
+    }
+    movePlayer()
+  } else if (direction.value) {
+    movePlayer()
+    if (ticks.value % ticksRate.value === 0) {
+      if (velocity.value > 0) {
+        velocity.value -= acceleration.value
+      } else {
+        velocity.value = 0;
+        direction.value = '';
+      }
+    }
+  }
+}
+
+
+onMounted(()=> {
+  setStartingPosition();
+  loop();
+  let keyDownHandler=(event:KeyboardEvent)=>{
+    event.preventDefault();
+    if(event.key==="Escape"){
+      document.removeEventListener('keydown',keyDownHandler,false)
+    }
+    if (event.key === 'ArrowUp' || event.key === 'w') {
+      yDir.value = 'up';
+    }
+    if (event.key === 'ArrowLeft' || event.key === 'a') {
+      xDir.value = 'left';
+    }
+    if (event.key === 'ArrowDown' || event.key === 's') {
+      yDir.value = 'down';
+    }
+    if (event.key === 'ArrowRight' || event.key === 'd') {
+      xDir.value = 'right';
+    }
+    direction.value = yDir.value + xDir.value;
+  }
+  let keyUpHandler=(event:KeyboardEvent)=>{
+    event.preventDefault();
+    if(event.key==="Escape"){
+      document.removeEventListener('keydown',keyUpHandler,false)
+    }
+    if (['ArrowUp', 'ArrowDown', 'w', 's'].includes(event.key)) {
+      yDir.value = '';
+    }
+    if (['ArrowLeft', 'ArrowRight', 'a', 'd'].includes(event.key)) {
+      xDir.value = '';
+    }
+  }
+  document.addEventListener("keydown",keyDownHandler);
+  document.addEventListener("keyup",keyUpHandler);
+})
 </script>
 <template>
   <g>

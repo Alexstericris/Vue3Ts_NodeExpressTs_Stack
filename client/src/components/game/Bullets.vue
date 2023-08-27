@@ -1,106 +1,127 @@
-<script lang="ts">
-import {defineComponent, nextTick} from "vue";
-import type {Bullet, Character} from "@/types/gametypes";
-import {mapState} from "vuex";
+<script setup lang="ts">
+import {nextTick, onMounted, ref} from "vue";
+import type {Bullet} from "@/types/gametypes";
 import GameHelper from "@/helpers/GameHelper";
+import {useStore} from "@/stores/store";
+import {useGameStore} from "@/stores/gameStore";
 
-export default defineComponent({
-  name: 'Bullets',
-  data() {
-    return {
-      ticks: 0,
-      velocity: 10,
-      gameWidth: 0,
-      gameHeight: 0,
-      bullets: [] as Array<Bullet>,
-    };
-  },
-  computed: {
-    ...mapState(['socket', "loading"]),
-    ...mapState('gameStore', ['character', 'otherCharacters'])
-  },
-  mounted() {
-    let gameRect = document.getElementById('mainSVG')?.getBoundingClientRect();
-    if (gameRect?.width && gameRect?.height) {
-      this.gameWidth = gameRect?.width;
-      this.gameHeight = gameRect?.height;
-    }
-    this.socket.on("shootBullet", (newBullet: Bullet) => {
-      // console.log("bulletShot")
-      nextTick(() => {
-        this.bullets = this.bullets.concat([newBullet])
-      })
+const store = useStore();
+const gameStore = useGameStore();
+const ticks = ref(0)
+const velocity = ref(10)
+const gameWidth = ref(0)
+const gameHeight = ref(0)
+const bullets = ref([]);
+
+store.socket.on("shootBullet", (newBullet: Bullet) => {
+  console.log("bulletShot")
+  bullets.value.push(newBullet)
+})
+
+onMounted(()=>{
+  let gameRect = document.getElementById('mainSVG')?.getBoundingClientRect();
+  if (gameRect?.width && gameRect?.height) {
+      gameWidth.value = gameRect.width;
+      gameHeight.value = gameRect.height;
+  }
+
+  loop();
+});
+
+function loop() {
+  ticks.value++
+  update()
+  requestAnimationFrame(loop)
+}
+
+function update() {
+  for (let i = 0; i < bullets.value.length; i++) {
+    let bullet = bullets.value[i];
+    bullet.xAxis += bullet.xVelocity;
+    bullet.yAxis += bullet.yVelocity;
+    bullets.value[i]=bullet
+    collided(bullet, i);
+  }
+  // bullets.value.forEach((bullet: Bullet,index:number) => {
+  //   bullet.xAxis += bullet.xVelocity;
+  //   bullet.yAxis += bullet.yVelocity;
+  //   collided(bullet,index);
+  // });
+  nextTick(() => {
+    bullets.value=bullets.value.filter((bullet) => {
+      return bullet.xAxis + bullet.xVelocity < gameWidth.value
+          && bullet.xAxis + bullet.xVelocity > 0
+          && bullet.yAxis + bullet.yVelocity < gameHeight.value
+          && bullet.yAxis + bullet.yVelocity > 0
     })
-    this.loop();
+  })
+}
 
-  },
-  methods: {
-    loop() {
-      this.ticks++;
-      this.update()
-      requestAnimationFrame(this.loop)
-    },
-
-    update() {
-      this.bullets.forEach((bullet: Bullet,index:number) => {
-        bullet.xAxis += bullet.xVelocity;
-        bullet.yAxis += bullet.yVelocity;
-        this.collided(bullet,index);
-      });
-      nextTick(() => {
-        this.bullets = this.bullets.filter((bullet) => {
-          return bullet.xAxis + bullet.xVelocity < this.gameWidth
-              && bullet.xAxis + bullet.xVelocity > 0
-              && bullet.yAxis + bullet.yVelocity < this.gameHeight
-              && bullet.yAxis + bullet.yVelocity > 0
-        })
-      })
-    },
-    collided(bullet:Bullet,index:number) {
-      //i got hit by other bullet
-      let a=GameHelper.distance({xAxis: bullet.xAxis, yAxis: bullet.yAxis}, this.character.position)
-      if (bullet.character_id!==this.character._id
-          &&(a - bullet.size - this.character.attributes.size) <= 0) {
-        nextTick(() => {
-          console.log('got hit');
-          this.character.isHit = true;
-          this.character.attributes.health_points -= bullet.damage;
-          this.bullets.splice(index, 1);
-          if (this.character.attributes.health_points<=0) {
-            this.socket.emit('playerLeft',this.character)
-            this.$store.commit("gameStore/setGameStarted", false);
-          }
-          setTimeout(() => {
-            this.character.isHit = false;
-          }, 70);
-        })
+function collided(bullet:Bullet,index:number) {
+  //i got hit by other bullet
+  let a=GameHelper.distance({xAxis: bullet.xAxis, yAxis: bullet.yAxis}, gameStore.character.position)
+  // console.log(bullet.character_id,gameStore.character._id,a,bullet.size,gameStore.character.attributes.size)
+  if (bullet.character_id!==gameStore.character._id
+      &&(a - bullet.size - gameStore.character.attributes.size) <= 0) {
+    nextTick(() => {
+      console.log('got hit');
+      gameStore.character.isHit = true;
+      gameStore.character.attributes.health_points -= bullet.damage;
+      bullets.value.splice(index, 1);
+      if (gameStore.character.attributes.health_points<=0) {
+        store.socket.emit('playerLeft',gameStore.character as any)
+        gameStore.gameStarted=false;
       }
-      this.otherCharacters.forEach((character: Character) => {
-        let hit=false
-        a = GameHelper.distance({xAxis: bullet.xAxis, yAxis: bullet.yAxis}, character.position);
-        if ((a - bullet.size - character.attributes.size) <= 0) {
-          hit = true;
-        }
-        //oponent hit
-        if (hit && bullet.character_id!==character._id&&!character.isHit) {
-          character.isHit = true;
-          console.log(character._id + " hit")
-          this.socket.emit("enemyHit",character)
-          setTimeout(() => {
-            character.isHit = false;
-          }, 70);
-          nextTick(() => {
-            this.bullets.splice(index, 1);
-          })
-        }
-      });
+      setTimeout(() => {
+        gameStore.character.isHit = false;
+      }, 70);
+    })
+  }
+  for (let characterId in gameStore.otherCharacters) {
+    let hit=false
+    a = GameHelper.distance({xAxis: bullet.xAxis, yAxis: bullet.yAxis}, gameStore.otherCharacters[characterId].position);
+    if ((a - bullet.size - gameStore.otherCharacters[characterId].attributes.size) <= 0) {
+      hit = true;
+    }
+    if (hit && bullet.character_id!==gameStore.otherCharacters[characterId]._id&&!gameStore.otherCharacters[characterId].isHit) {
+      gameStore.otherCharacters[characterId].isHit = true;
+      console.log(gameStore.otherCharacters[characterId]._id + " hit")
+      store.socket.emit("enemyHit",gameStore.otherCharacters[characterId] as any)
+      setTimeout(() => {
+        gameStore.otherCharacters[characterId].isHit = false;
+      }, 70);
+      nextTick(() => {
+        bullets.value.splice(index, 1);
+      })
     }
   }
-})
+/*
+  gameStore.otherCharacters.forEach((character: Character) => {
+    let hit=false
+    a = GameHelper.distance({xAxis: bullet.xAxis, yAxis: bullet.yAxis}, character.position);
+    if ((a - bullet.size - character.attributes.size) <= 0) {
+      hit = true;
+    }
+    //oponent hit
+    if (hit && bullet.character_id!==character._id&&!character.isHit) {
+      character.isHit = true;
+      console.log(character._id + " hit")
+      store.socket.emit("enemyHit",character as any)
+      setTimeout(() => {
+        character.isHit = false;
+      }, 70);
+      nextTick(() => {
+        bullets.value.splice(index, 1);
+      })
+    }
+  });
+*/
+}
+
 </script>
 <template>
   <g>
-    <circle :key="'bullet'+index" v-for="(bullet,index) in bullets"
+    <circle v-for="(bullet) in bullets"
             :fill="bullet.color"
             :cx="bullet.xAxis"
             :cy="bullet.yAxis"

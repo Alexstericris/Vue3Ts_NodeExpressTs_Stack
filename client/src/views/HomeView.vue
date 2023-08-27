@@ -1,17 +1,32 @@
-<script lang="ts">
-import {defineComponent} from "vue";
-import {mapState} from "vuex";
+<script setup lang="ts">
+import {useToastStore} from "@/stores/toastStore";
+import {useStore} from "@/stores/store";
+import {ref} from "vue";
 
-export default defineComponent({
-    computed: {
-        ...mapState(['user'])
-    }
-});
+const store=useStore()
+const toast=useToastStore()
+const user = store.user;
+const tests = ref([]);
 
+function add() {
+  tests.value.push({name:'yo'})
+}
+
+function mytest() {
+  let temp=tests.value[0]
+  temp.name="mytest"
+  tests.value[0]=temp
+}
 </script>
-
 <template>
     <main>
+      <div :key="index" v-for="(test,index) in tests" class="mt-4 col-lg-3">
+        <div class="h-100 p-5 bg-light border rounded-3 text-center">
+          <h2>{{ test.name }}</h2>
+        </div>
+      </div>
+      <button @click="add()">t1</button>
+      <button @click="mytest()">t2</button>
         <div class="container mt-5 py-4 text-center">
             <div class="flex flex-wrap justify-content-center">
                     <a class="btn text-nowrap mt-3 px-10 mx-2 py-5 bg-light rounded text-decoration-none" href="https://www.numeriqberry.com">

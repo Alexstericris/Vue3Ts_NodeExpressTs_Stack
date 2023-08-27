@@ -1,87 +1,63 @@
-<script lang="ts">
-import {defineComponent} from "vue";
+<script setup lang="ts">
 import ProgressBar from "@/components/snippets/ProgressBar.vue";
-import http from "@/axios";
+const skills= [
+  {
+    name: 'Vue 2 + 3',
+    level: 90,
+    img: 'vuelogo.svg',
+    style: '',
+  }, {
+    name: 'JS',
+    level: 90,
+    img: 'jslogo.svg',
+    style: 'width:89%',
 
-export default defineComponent({
-    components: {ProgressBar},
-    inject: [],
-    props: {
-        msg: String
-    },
-    data() {
-        return {
-            skills: [
-                {
-                    name: 'Vue 2 + 3',
-                    level: 90,
-                    img: 'vuelogo.svg',
-                    style: '',
-                }, {
-                    name: 'JS',
-                    level: 90,
-                    img: 'jslogo.svg',
-                    style: 'width:89%',
+  }, {
+    name: 'Node JS',
+    level: 40,
+    img: 'nodejs-logo.svg',
+    style: 'width:80%',
 
-                }, {
-                    name: 'Node JS',
-                    level: 40,
-                    img: 'nodejs-logo.svg',
-                    style: 'width:80%',
-
-                }, {
-                    name: 'Typescript',
-                    level: 40,
-                    img: 'Typescript_logo_2020.svg',
-                    style: 'width:89%',
-                }, {
-                    name: 'CSS',
-                    level: 30,
-                    img: 'csslogo2.svg',
-                    style: 'width:78%',
-                }, {
-                    name: 'Laravel',
-                    level: 90,
-                    img: 'laravel-2.svg',
-                    style: 'width:89%',
-                }, {
-                    name: 'Python',
-                    level: 30,
-                    img: 'python-logo.svg',
-                    style: 'width:89%',
-                }, {
-                    name: 'Ubuntu',
-                    level: 75,
-                    img: 'ubuntulogo.svg',
-                    style: 'width:95%'
-                }, {
-                    name: 'Mysql',
-                    level: 90,
-                    img: 'mysqllogo.svg',
-                    style: 'width:110%',
-                }, {
-                    name: 'mongoDB',
-                    level: 30,
-                    img: 'MongoDB_Logo.svg',
-                    style: 'width:110%',
-                },
-            ]
-        }
-    },
-    created() {
-        // this.test()
-    },
-    methods: {
-        // test() {
-        //     http.get('/api/users').then(response => {
-        //         console.log(response.data)
-        //     })
-        // },
-        getImgSrc(img: string) {
-            return new URL(`../assets/${img}`, import.meta.url).href
-        },
-    }
-})
+  }, {
+    name: 'Typescript',
+    level: 40,
+    img: 'Typescript_logo_2020.svg',
+    style: 'width:89%',
+  }, {
+    name: 'CSS',
+    level: 30,
+    img: 'csslogo2.svg',
+    style: 'width:78%',
+  }, {
+    name: 'Laravel',
+    level: 90,
+    img: 'laravel-2.svg',
+    style: 'width:89%',
+  }, {
+    name: 'Python',
+    level: 30,
+    img: 'python-logo.svg',
+    style: 'width:89%',
+  }, {
+    name: 'Ubuntu',
+    level: 75,
+    img: 'ubuntulogo.svg',
+    style: 'width:95%'
+  }, {
+    name: 'Mysql',
+    level: 90,
+    img: 'mysqllogo.svg',
+    style: 'width:110%',
+  }, {
+    name: 'mongoDB',
+    level: 30,
+    img: 'MongoDB_Logo.svg',
+    style: 'width:110%',
+  },
+]
+function getImgSrc(img: string) {
+  return new URL(`../assets/${img}`, import.meta.url).href
+}
 </script>
 
 <template>
@@ -114,7 +90,7 @@ export default defineComponent({
                 <div :key="index" v-for="(skill,index) in skills" class="mt-4 col-lg-3">
                     <div class="h-100 p-5 bg-light border rounded-3 text-center">
                         <h2>{{ skill.name }}</h2>
-                        <img :style="skill.style" :src="getImgSrc(skill.img)">
+                        <img :alt="skill.name" :style="skill.style" :src="getImgSrc(skill.img)">
                         <ProgressBar :level="skill.level"></ProgressBar>
                         <!--                        <p>Swap the background-color utility and add a `.text-*` color utility to mix up the jumbotron look. Then, mix and match with additional component themes and more.</p>-->
                         <!--                        <button class="btn btn-outline-light" type="button">Example button</button>-->

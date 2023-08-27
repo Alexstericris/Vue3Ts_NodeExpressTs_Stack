@@ -1,18 +1,11 @@
-<script lang="ts">
-import {defineComponent} from "vue";
-import {mapState} from "vuex";
+<script setup lang="ts">
 import RegistrationApi from "@/apis/RegistrationApi";
+import {useStore} from "@/stores/store";
+const store=useStore()
 
-export default defineComponent({
-    computed: {
-        ...mapState(['user'])
-    },
-    methods: {
-        logout() {
-            RegistrationApi.logout();
-        },
-    }
-})
+function logout() {
+  RegistrationApi.logout();
+}
 </script>
 
 <template>
@@ -38,7 +31,7 @@ export default defineComponent({
           <li>
             <RouterLink class="nav-link dropdown-item" to="/about">About</RouterLink>
           </li>
-          <template v-if="user">
+          <template v-if="store.user?._id">
             <li>
               <RouterLink class="nav-link dropdown-item" to="/game">Game</RouterLink>
             </li>
@@ -68,7 +61,7 @@ export default defineComponent({
                     <li class="nav-item">
                         <RouterLink class="nav-link" to="/about">About</RouterLink>
                     </li>
-                    <template v-if="user">
+                    <template v-if="store.user?._id">
                         <li class="nav-item">
                             <RouterLink class="nav-link" to="/game">Game</RouterLink>
                         </li>

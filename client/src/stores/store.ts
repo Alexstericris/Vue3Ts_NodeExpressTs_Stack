@@ -1,12 +1,9 @@
-import type {InjectionKey} from 'vue'
-import {createStore, Store} from 'vuex'
 import type {User} from "@/types/types";
 import {ioclient} from "@/ioclient";
 import type {Socket} from "socket.io-client";
-import {toast} from "@/stores/toastStore";
-import {gameStore} from "@/stores/gameStore";
-import type {AxiosError, AxiosResponse, AxiosStatic} from "axios";
+import type {AxiosResponse} from "axios";
 import http from "@/axios";
+import {defineStore} from "pinia";
 
 export interface State {
     token: string
@@ -15,49 +12,32 @@ export interface State {
     loading:boolean,
 }
 
-export const key: InjectionKey<Store<State>> = Symbol();
-
-export const store = createStore<State>({
-    state: {
+export const useStore= defineStore('store',{
+    state:():State=>({
         loading:false,
         token: localStorage.getItem('token') || '',
-        user: undefined,
+        user: {} as User,
         socket:{} as Socket,
-    },
-    mutations: {
-        setToken(state: State, token: string) {
-            localStorage.setItem('token', token)
-            state.token = token
+    }),
+    actions:{
+        setToken(token:string) {
+            this.token=token
+            localStorage.setItem('token', token);
+            this.socket= ioclient(this.token)
         },
-        setUser(state: State, user: User) {
-            state.user = user
-        },
-        setIoClient(state: State, token: string) {
-            state.socket = ioclient(token)
-        },
-        setLoading(state: State, loading: boolean) {
-            state.loading = loading
-        },
-    },
-    actions: {
-        getAuthenticatedUser(context: any) {
-            context.commit('setLoading', true)
+        getAuthenticatedUser() {
+            this.loading = true;
             return http.post('/auth/user').then((response:AxiosResponse<any>) => {
-                if (!context.state.token) {
-                    context.commit('setToken', response.data.token);
+                if (!this.token) {
+                    this.setToken(response.data.token)
                 }
-                context.commit('setUser', response.data.user)
-                context.commit('setIoClient', context.state.token)
-                context.commit('setLoading', false)
-            }).catch((e:AxiosError) => {
-                context.commit('setToken', '')
-                context.commit('setLoading', false)
+                this.user= response.data.user
+                this.socket=ioclient(this.token)
+            }).catch(() => {
+                this.token=''
+            }).finally(()=>{
+                this.loading = false;
             })
-
         },
-    },
-    modules:{
-        toast,
-        gameStore
     }
 })

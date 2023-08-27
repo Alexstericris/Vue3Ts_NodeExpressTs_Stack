@@ -2,9 +2,14 @@
 import {defineComponent} from "vue";
 import GameApi from "@/apis/GameApi";
 import {Modal} from "bootstrap";
+import {useToastStore} from "@/stores/toastStore";
 
 export default defineComponent({
     name: 'NewCharacter',
+  setup(){
+    const toast=useToastStore()
+    return {toast}
+  },
     data() {
         return {
             character: {
@@ -29,7 +34,7 @@ export default defineComponent({
         this.$store.commit("gameStore/setCharacter", response.data)
         this.$emit("newCharacter")
       }).catch(() => {
-        this.$store.commit('toast/error', 'Failed to create character')
+        this.toast.error('Failed to create character')
       })
     },
   }
