@@ -1,44 +1,39 @@
-<script lang="ts">
-import {defineComponent} from "vue";
+<script setup lang="ts">
+import {defineComponent, onMounted, reactive, ref} from "vue";
 import GameApi from "@/apis/GameApi";
 import {Modal} from "bootstrap";
 import {useToastStore} from "@/stores/toastStore";
+import type {CharacterAttributes} from "@/types/gametypes";
+import {useGameStore} from "@/stores/gameStore";
 
-export default defineComponent({
-    name: 'NewCharacter',
-  setup(){
-    const toast=useToastStore()
-    return {toast}
-  },
-    data() {
-        return {
-            character: {
-                color: '',
-                size: 50,
-              max_health_points:100,
-              health_points:100
-            },
-            modal: {} as Modal
-        }
-    },
-    mounted() {
-        let modal = document.querySelector('#newCharacterModal')
-        if (modal) {
-            this.modal = new Modal(modal, {});
-        }
-    },
-  methods: {
-    newCharacter() {
-      GameApi.createCharacter(this.character).then((response) => {
-        this.modal.hide()
-        this.$store.commit("gameStore/setCharacter", response.data)
-        this.$emit("newCharacter")
-      }).catch(() => {
-        this.toast.error('Failed to create character')
-      })
-    },
-  }
+const toast = useToastStore();
+const gameStore = useGameStore();
+const modal=ref()
+const character = reactive({
+  color: '',
+  size: 50,
+  max_health_points: 100,
+  health_points: 100
 })
+
+const emit = defineEmits(['newCharacter'])
+
+function newCharacter() {
+  GameApi.createCharacter(character as CharacterAttributes).then((response) => {
+    modal.value.hide()
+    gameStore.character=response.data
+    emit('newCharacter');
+  }).catch(() => {
+    toast.error('Failed to create character')
+  })
+}
+
+onMounted(()=>{
+  let modalDoc = document.querySelector('#newCharacterModal')
+  if (modalDoc) {
+    modal.value = new Modal(modalDoc, {});
+  }
+});
 </script>
 
 <template>

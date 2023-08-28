@@ -48,7 +48,7 @@ export default class CharacterController{
             await CharacterController.autoSelectFirstCharacter(req.user._id, res);
             return;
         }
-        const character=await Character.findOne({_id:"64e13bf31b215701d245d852"}).exec();
+        const character=await Character.findOne({_id:selectedCharacter.character_id}).exec();
         if (character===null) {
             await selectedCharacter?.delete();
             await CharacterController.autoSelectFirstCharacter(req.user._id, res);

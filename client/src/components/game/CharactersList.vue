@@ -15,6 +15,7 @@ onBeforeMount(()=>{
 function getSelectedCharacter() {
   GameApi.getSelectedCharacter().then(response=>{
     gameStore.selectedCharacter = response.data;
+    console.log(gameStore.selectedCharacter)
   })
 }
 
