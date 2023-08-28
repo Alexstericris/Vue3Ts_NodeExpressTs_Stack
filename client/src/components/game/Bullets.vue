@@ -27,10 +27,14 @@ onMounted(()=>{
 
   loop();
 });
-
+let time=new Date()
 function loop() {
-  ticks.value++
-  update()
+  var time2 = new Date;
+  if ((time2 - time)>10) {
+    ticks.value++
+    update()
+    time = time2;
+  }
   requestAnimationFrame(loop)
 }
 
@@ -42,11 +46,6 @@ function update() {
     bullets.value[i]=bullet
     collided(bullet, i);
   }
-  // bullets.value.forEach((bullet: Bullet,index:number) => {
-  //   bullet.xAxis += bullet.xVelocity;
-  //   bullet.yAxis += bullet.yVelocity;
-  //   collided(bullet,index);
-  // });
   nextTick(() => {
     bullets.value=bullets.value.filter((bullet) => {
       return bullet.xAxis + bullet.xVelocity < gameWidth.value
@@ -95,27 +94,6 @@ function collided(bullet:Bullet,index:number) {
       })
     }
   }
-/*
-  gameStore.otherCharacters.forEach((character: Character) => {
-    let hit=false
-    a = GameHelper.distance({xAxis: bullet.xAxis, yAxis: bullet.yAxis}, character.position);
-    if ((a - bullet.size - character.attributes.size) <= 0) {
-      hit = true;
-    }
-    //oponent hit
-    if (hit && bullet.character_id!==character._id&&!character.isHit) {
-      character.isHit = true;
-      console.log(character._id + " hit")
-      store.socket.emit("enemyHit",character as any)
-      setTimeout(() => {
-        character.isHit = false;
-      }, 70);
-      nextTick(() => {
-        bullets.value.splice(index, 1);
-      })
-    }
-  });
-*/
 }
 
 </script>

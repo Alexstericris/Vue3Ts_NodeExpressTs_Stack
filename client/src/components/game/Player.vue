@@ -31,11 +31,15 @@ const inputs=computed(()=>{
 const noInputs=computed(()=>{
   return !xDir.value&&!yDir.value
 })
-
+let time=new Date()
 function loop() {
-  ticks.value++
-  update()
-  isHit();
+  var time2 = new Date;
+  if ((time2 - time)>10) {
+    ticks.value++
+    update()
+    isHit();
+    time = time2;
+  }
   requestAnimationFrame(loop)
 }
 
