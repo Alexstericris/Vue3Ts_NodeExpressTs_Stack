@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {onMounted, ref} from "vue";
+import {onBeforeMount, onMounted, ref} from "vue";
 import type {Bullet} from "@/types/gametypes";
 import {useStore} from "@/stores/store";
 import {useGameStore} from "@/stores/gameStore";
@@ -10,9 +10,16 @@ const gameStore = useGameStore();
 const top=ref(0)
 const left=ref(0)
 const bulletVelocity=ref(10)
-const mainSVG=ref(null)
+const mainSVG=ref<SVGSVGElement>(null as SVGSVGElement)
+const height=ref(window.innerWidth)
+const width=ref(window.innerWidth)
 
 onMounted(()=>{
+  if (height.value < 720||width.value < 1280) {
+    if (mainSVG.value) {
+      mainSVG.value.requestFullscreen();
+    }
+  }
   top.value=(mainSVG.value as SVGElement).getBoundingClientRect().top
   left.value=(mainSVG.value as SVGElement).getBoundingClientRect().left
 })
@@ -28,7 +35,6 @@ function onClick($event: MouseEvent) {
   let b = xTo - gameStore.character.position.xAxis
   let c = yTo - gameStore.character.position.yAxis
   let a = Math.sqrt(b ** 2 + c ** 2)
-  console.log(xTo,yTo,a,b,c)
   let ratio = bulletVelocity.value / a;
   let xVelocity = ratio * b
   let yVelocity = ratio * c
@@ -49,7 +55,11 @@ function onClick($event: MouseEvent) {
 </script>
 
 <template>
-  <svg id="mainSVG" ref="mainSVG" class="bg-white rounded" @click="onClick($event)"
+  <svg id="mainSVG"
+       ref="mainSVG"
+       class="bg-white"
+       :class="height < 720||width < 1280?'':'rounded'"
+       @click="onClick($event)"
        @mousemove="onMouseMove($event)">
     <slot></slot>
   </svg>
@@ -58,6 +68,6 @@ function onClick($event: MouseEvent) {
 <style scoped>
 #mainSVG {
   height: 720px;
-  width: 100%
+  width: 1280px;
 }
 </style>

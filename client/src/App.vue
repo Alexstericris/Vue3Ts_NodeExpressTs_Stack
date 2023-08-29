@@ -15,7 +15,7 @@ import Toast from "@/components/snippets/Toast.vue";
   </header>
   <RouterView class="mt-6 mb-5"/>
   <Toast></Toast>
-  <footer class="py-2 mt-4 page-footer col-sm-12 text-muted text-center bg-white border-top">
+  <footer class="py-2 mt-4 page-footer col-12 text-muted text-center bg-white border-top">
     <div class="container">
       <div>
         ©Sterian-Alexandru Cristea 2021

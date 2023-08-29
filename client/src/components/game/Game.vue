@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {onBeforeMount, onBeforeUnmount} from "vue";
+import {onBeforeMount, onBeforeUnmount, ref} from "vue";
 import BaseLayer from '@/components/game/BaseLayer.vue';
 import Player from "@/components/game/Player.vue";
 import OtherPlayer from "@/components/game/OtherPlayer.vue";
@@ -10,12 +10,16 @@ import CrossHair from "@/components/game/CrossHair.vue";
 import {useStore} from "@/stores/store";
 import {useGameStore} from "@/stores/gameStore";
 import {useRouter} from "vue-router";
+import MobilePlayer from "@/components/game/MobilePlayer.vue";
 // import BaseCanvasLayer from "@/components/game/BaseCanvasLayer.vue";
 // import TestCanvasLayer from "@/components/game/TestCanvasLayer.vue";
 
 const router=useRouter()
 const store=useStore()
 const gameStore = useGameStore();
+const height=ref(window.innerWidth)
+const width=ref(window.innerWidth)
+
 onBeforeMount(async ()=>{
   await GameApi.getSelectedCharacter().then(response=>{
     if (!response.data) {
@@ -50,11 +54,14 @@ onBeforeUnmount(()=>{
 <template>
   <!--    <TestCanvasLayer></TestCanvasLayer>-->
   <!--    <BaseCanvasLayer></BaseCanvasLayer>-->
-  <div class="container mt-6">
+  <div class="text-center mt-6">
     <BaseLayer>
       <template v-if="gameStore.character?._id">
-        <Player :character="gameStore.character"></Player>
-        <CrossHair></CrossHair>
+        <MobilePlayer v-if="height<720||width<1280" :character="gameStore.character"></MobilePlayer>
+        <template v-else>
+          <Player :character="gameStore.character"></Player>
+          <CrossHair></CrossHair>
+        </template>
       </template>
       <Bullets></Bullets>
       <template :key="otherCharacter?._id" v-for="(otherCharacter) in gameStore.otherCharacters">
