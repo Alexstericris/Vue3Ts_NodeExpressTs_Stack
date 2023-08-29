@@ -29,7 +29,9 @@ onBeforeMount(async ()=>{
   })
   store.socket.emit('pendingGameJoin', gameStore.character as any);
   store.socket.on('playerJoined', (characters: CharactersCollection) => {
-    delete characters[gameStore.character._id];
+    if (gameStore.character._id) {
+      delete characters[gameStore.character._id];
+    }
     gameStore.otherCharacters = characters;
   });
   store.socket.on('positionUpdated', (characterId: string, position: Position) => {

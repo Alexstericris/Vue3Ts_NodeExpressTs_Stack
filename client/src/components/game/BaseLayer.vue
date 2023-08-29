@@ -10,7 +10,7 @@ const gameStore = useGameStore();
 const top=ref(0)
 const left=ref(0)
 const bulletVelocity=ref(10)
-const mainSVG=ref<SVGSVGElement>(null as SVGSVGElement)
+const mainSVG=ref<SVGSVGElement>({} as SVGSVGElement)
 const height=ref(window.innerWidth)
 const width=ref(window.innerWidth)
 

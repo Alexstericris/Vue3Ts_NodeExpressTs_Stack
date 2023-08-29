@@ -1,14 +1,15 @@
 <script setup lang="ts">
 import RegistrationApi from "@/apis/RegistrationApi";
+import {reactive} from "vue";
 
-const user = {
+const user = reactive({
   username: '',
   email: '',
   password: '',
   confirmPassword: '',
-};
+})
 function register() {
-  RegistrationApi.register(this.user);
+  RegistrationApi.register(user);
 }
 </script>
 <template>

@@ -3,9 +3,10 @@ import {onBeforeMount, ref} from "vue";
 import GameApi from "@/apis/GameApi";
 import NewCharacter from "@/components/game/NewCharacter.vue";
 import {useGameStore} from "@/stores/gameStore";
+import type {Character} from "@/types/gametypes";
 
 const gameStore = useGameStore();
-const characters=ref([])
+const characters=ref<Array<Character>>([])
 
 onBeforeMount(()=>{
   getSelectedCharacter();

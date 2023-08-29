@@ -11,7 +11,7 @@ const ticks = ref(0)
 const velocity = ref(10)
 const gameWidth = ref(0)
 const gameHeight = ref(0)
-const bullets = ref([]);
+const bullets = ref<Array<Bullet>>([]);
 
 store.socket.on("shootBullet", (newBullet: Bullet) => {
   console.log("bulletShot")
@@ -30,7 +30,7 @@ onMounted(()=>{
 let time=new Date()
 function loop() {
   var time2 = new Date;
-  if ((time2 - time)>10) {
+  if ((time2.getTime() - time.getTime())>10) {
     ticks.value++
     update()
     time = time2;

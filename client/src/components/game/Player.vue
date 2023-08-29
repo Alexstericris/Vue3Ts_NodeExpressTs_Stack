@@ -34,7 +34,7 @@ const noInputs=computed(()=>{
 let time=new Date()
 function loop() {
   var time2 = new Date;
-  if ((time2 - time)>10) {
+  if ((time2.getTime() - time.getTime())>10) {
     ticks.value++
     update()
     isHit();

@@ -18,7 +18,7 @@ const ticksRate = ref(10);
 const acceleration = ref(1);
 const velocity = ref(0);
 const maxVelocity= ref(10);
-const mainSVG = ref(document.getElementById('mainSVG'));
+const mainSVG = ref<HTMLElement|null>(document.getElementById('mainSVG'));
 const hitOpacity = ref(0);
 const top=ref(0)
 const left=ref(0)
@@ -28,7 +28,7 @@ const yVelocity=ref(0)
 let time=new Date()
 function loop() {
   var time2 = new Date;
-  if ((time2 - time) > 10) {
+  if ((time2.getTime() - time.getTime()) > 10) {
     ticks.value++
     update()
     isHit();
@@ -125,11 +125,11 @@ function movePlayer() {
   if (yAxis.value<size) {
     yAxis.value=size
   }
-  if (xAxis.value>(mainSVG.value?.getBoundingClientRect().width-size)) {
-    xAxis.value=mainSVG.value?.getBoundingClientRect().width-size
+  if (mainSVG.value instanceof SVGElement && xAxis.value > (mainSVG.value?.getBoundingClientRect().width - size)) {
+    xAxis.value = mainSVG.value.getBoundingClientRect().width - size
   }
-  if (yAxis.value>(mainSVG.value?.getBoundingClientRect().height-size)) {
-    yAxis.value=mainSVG.value?.getBoundingClientRect().height-size
+  if (mainSVG.value instanceof SVGElement && yAxis.value > (mainSVG.value?.getBoundingClientRect().height - size)) {
+    yAxis.value = mainSVG.value.getBoundingClientRect().height - size
   }
   if (prevXAxis.value !== xAxis.value || prevYAxis.value !== yAxis.value) {
     persistPosition();
@@ -138,8 +138,10 @@ function movePlayer() {
 
 onMounted(()=> {
   setStartingPosition();
-  top.value=(mainSVG.value as SVGElement).getBoundingClientRect().top
-  left.value=(mainSVG.value as SVGElement).getBoundingClientRect().left
+  if (mainSVG.value instanceof SVGElement) {
+    top.value = mainSVG.value.getBoundingClientRect().top;
+    left.value = mainSVG.value.getBoundingClientRect().left
+  }
   loop();
   let fingerMoveHandler=(event:TouchEvent)=>{
     mobileGameStore.clicked=true
