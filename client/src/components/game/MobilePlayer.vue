@@ -8,7 +8,10 @@ import {useMobileGameStore} from "@/stores/mobileGameStore";
 const store = useStore();
 const gameStore = useGameStore();
 const mobileGameStore=useMobileGameStore()
-const playerSize = ref(50);
+
+const playerSize=computed(()=>{
+  return gameStore.character.attributes.size*gameStore.width/1280
+})
 const xAxis = ref(100);
 const yAxis = ref(100);
 const prevXAxis = ref(0);
@@ -57,8 +60,8 @@ function isHit() {
 
 function persistPosition(){
   let position={
-    xAxis:xAxis.value,
-    yAxis:yAxis.value
+    xAxis:xAxis.value*1280/gameStore.width,
+    yAxis:yAxis.value*1280/gameStore.width
   }
   gameStore.character.position = position;
   store.socket.emit('positionUpdated', gameStore.character._id as any, position as any)
@@ -98,38 +101,38 @@ function movePlayer() {
     let b = xTo - xAxis.value
     let c = yTo - yAxis.value
     let a = Math.sqrt(b ** 2 + c ** 2)
-    let ratio = velocity.value / a;
+    let ratio = velocity.value / a * gameStore.width / 1280;
     xVelocity.value = ratio * b
     yVelocity.value = ratio * c
     xAxis.value += xVelocity.value;
     yAxis.value += yVelocity.value;
   }
   else{
-    let xTo=prevXAxis.value - left.value + xVelocity.value
-    let yTo=prevYAxis.value - top.value + yVelocity.value
+    let xTo=prevXAxis.value + xVelocity.value
+    let yTo=prevYAxis.value + yVelocity.value
     let b = xTo - xAxis.value
     let c = yTo - yAxis.value
     let a = Math.sqrt(b ** 2 + c ** 2)
-    if (a > 0) {
-      let ratio = velocity.value / a;
+    if (a !== 0) {
+      let ratio = velocity.value / a * gameStore.width / 1280;
       xVelocity.value = ratio * b
+
       yVelocity.value = ratio * c
       xAxis.value += xVelocity.value;
       yAxis.value += yVelocity.value;
     }
   }
-  let size = gameStore.character.attributes.size;
-  if (xAxis.value<size) {
-    xAxis.value=size
+  if (xAxis.value<playerSize.value) {
+    xAxis.value=playerSize.value
   }
-  if (yAxis.value<size) {
-    yAxis.value=size
+  if (yAxis.value<playerSize.value) {
+    yAxis.value=playerSize.value
   }
-  if (mainSVG.value instanceof SVGElement && xAxis.value > (mainSVG.value?.getBoundingClientRect().width - size)) {
-    xAxis.value = mainSVG.value.getBoundingClientRect().width - size
+  if (mainSVG.value instanceof SVGElement && xAxis.value > (mainSVG.value?.getBoundingClientRect().width - playerSize.value)) {
+    xAxis.value = mainSVG.value.getBoundingClientRect().width - playerSize.value
   }
-  if (mainSVG.value instanceof SVGElement && yAxis.value > (mainSVG.value?.getBoundingClientRect().height - size)) {
-    yAxis.value = mainSVG.value.getBoundingClientRect().height - size
+  if (mainSVG.value instanceof SVGElement && yAxis.value > (mainSVG.value?.getBoundingClientRect().height - playerSize.value)) {
+    yAxis.value = mainSVG.value.getBoundingClientRect().height - playerSize.value
   }
   if (prevXAxis.value !== xAxis.value || prevYAxis.value !== yAxis.value) {
     persistPosition();
@@ -163,17 +166,17 @@ onMounted(()=> {
     <circle ref="player" :fill="gameStore.character.attributes.color"
             :cx="xAxis"
             :cy="yAxis"
-            :r="gameStore.character.attributes.size"/>
+            :r="playerSize"/>
     <template v-if="gameStore.character.attributes.health_points<gameStore.character.attributes.max_health_points">
-      <rect :x="xAxis -gameStore.character.attributes.size"
-            :y="yAxis+ gameStore.character.attributes.size +10"
-            :width="gameStore.character.attributes.size*2"
+      <rect :x="xAxis -playerSize"
+            :y="yAxis+ playerSize +10"
+            :width="playerSize*2"
             height="10" fill="#ff0000">
 
       </rect>
-      <rect :x="xAxis -gameStore.character.attributes.size"
-            :y="yAxis+ gameStore.character.attributes.size +10"
-            :width="gameStore.character.attributes.size*2*getHealthPercentage()"
+      <rect :x="xAxis -playerSize"
+            :y="yAxis+ playerSize +10"
+            :width="playerSize*2*getHealthPercentage()"
             height="10" fill="#00ff00"></rect>
     </template>
   </g>

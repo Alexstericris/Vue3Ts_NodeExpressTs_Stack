@@ -7,10 +7,11 @@ import {useGameStore} from "@/stores/gameStore";
 const props=defineProps<{
   character:Character
 }>()
-
 const store = useStore();
 const gameStore = useGameStore();
-const playerSize = ref(50);
+const playerSize=computed(()=>{
+  return gameStore.character.attributes.size*gameStore.width/1280
+})
 const xAxis = ref(100);
 const yAxis = ref(100);
 const xDir=ref('');
@@ -180,17 +181,17 @@ onMounted(()=> {
     <circle ref="player" :fill="character.attributes.color"
             :cx="xAxis"
             :cy="yAxis"
-            :r="character.attributes.size"/>
+            :r="playerSize"/>
     <template v-if="character.attributes.health_points<character.attributes.max_health_points">
-      <rect :x="xAxis -character.attributes.size"
-            :y="yAxis+ character.attributes.size +10"
-            :width="character.attributes.size*2"
+      <rect :x="xAxis -playerSize"
+            :y="yAxis+ playerSize +10"
+            :width="playerSize*2"
             height="10" fill="#ff0000">
 
       </rect>
-      <rect :x="xAxis -character.attributes.size"
-            :y="yAxis+ character.attributes.size +10"
-            :width="character.attributes.size*2*getHealthPercentage()"
+      <rect :x="xAxis -playerSize"
+            :y="yAxis+ playerSize +10"
+            :width="playerSize*2*getHealthPercentage()"
             height="10" fill="#00ff00"></rect>
     </template>
   </g>

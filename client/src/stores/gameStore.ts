@@ -12,6 +12,8 @@ export interface GameState {
     clicked: boolean,
     clickX: number,
     clickY: number,
+    height: number,
+    width: number,
     gameStarted:boolean,
 }
 
@@ -26,7 +28,8 @@ export const useGameStore= defineStore('game',{
         clickX: 0,
         clickY: 0,
         gameStarted: false,
-
+        height:720,
+        width:1280,
         selectedCharacter: {} as Character,
     }),
     actions:{

@@ -1,23 +1,19 @@
-<script lang="ts">
-import {defineComponent} from "vue";
-import type {PropType} from "vue";
+<script setup lang="ts">
 import type {Character} from "@/types/gametypes";
+import {useGameStore} from "@/stores/gameStore";
 
-export default defineComponent({
-    name:"OtherPlayer",
-    props:{
-        character: {
-            type:Object as PropType<Character>,
-            required:true
-        },
-    }
-});
+const props=defineProps<{
+  character:Character
+}>()
+
+const gameStore = useGameStore();
+
 </script>
 <template>
-    <circle :id="'player'+character._id" :fill="character.attributes.color"
-            :cx="character.position.xAxis"
-            :cy="character.position.yAxis"
-            :r="character.attributes.size"/>
+    <circle :id="'player'+props.character._id" :fill="props.character.attributes.color"
+            :cx="props.character.position.xAxis*gameStore.width/1280"
+            :cy="props.character.position.yAxis*gameStore.width/1280"
+            :r="props.character.attributes.size*gameStore.width/1280"/>
 </template>
 
 <style scoped>

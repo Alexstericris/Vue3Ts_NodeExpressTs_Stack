@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {nextTick, onMounted, ref} from "vue";
+import {nextTick, onMounted, ref,computed} from "vue";
 import type {Bullet} from "@/types/gametypes";
 import GameHelper from "@/helpers/GameHelper";
 import {useStore} from "@/stores/store";
@@ -12,7 +12,9 @@ const velocity = ref(10)
 const gameWidth = ref(0)
 const gameHeight = ref(0)
 const bullets = ref<Array<Bullet>>([]);
-
+const playerSize=computed(()=>{
+  return gameStore.character.attributes.size*gameStore.width/1280
+})
 store.socket.on("shootBullet", (newBullet: Bullet) => {
   console.log("bulletShot")
   bullets.value.push(newBullet)
@@ -48,20 +50,20 @@ function update() {
   }
   nextTick(() => {
     bullets.value=bullets.value.filter((bullet) => {
-      return bullet.xAxis + bullet.xVelocity < gameWidth.value
-          && bullet.xAxis + bullet.xVelocity > 0
-          && bullet.yAxis + bullet.yVelocity < gameHeight.value
-          && bullet.yAxis + bullet.yVelocity > 0
+      return (bullet.xAxis + bullet.xVelocity)*gameStore.width/1280 < gameStore.width
+          && (bullet.xAxis + bullet.xVelocity)*gameStore.width/1280 > 0
+          && (bullet.yAxis + bullet.yVelocity)*gameStore.width/1280 < gameStore.height
+          && (bullet.yAxis + bullet.yVelocity)*gameStore.width/1280 > 0
     })
   })
 }
 
 function collided(bullet:Bullet,index:number) {
   //i got hit by other bullet
-  let a=GameHelper.distance({xAxis: bullet.xAxis, yAxis: bullet.yAxis}, gameStore.character.position)
+  let a=GameHelper.distance({xAxis: bullet.xAxis, yAxis: bullet.yAxis}, gameStore.character.position,gameStore.width/1280)
   // console.log(bullet.character_id,gameStore.character._id,a,bullet.size,gameStore.character.attributes.size)
   if (bullet.character_id!==gameStore.character._id
-      &&(a - bullet.size - gameStore.character.attributes.size) <= 0) {
+      &&(a - bullet.size - playerSize.value) <= 0) {
     nextTick(() => {
       console.log('got hit');
       gameStore.character.isHit = true;
@@ -78,8 +80,8 @@ function collided(bullet:Bullet,index:number) {
   }
   for (let characterId in gameStore.otherCharacters) {
     let hit=false
-    a = GameHelper.distance({xAxis: bullet.xAxis, yAxis: bullet.yAxis}, gameStore.otherCharacters[characterId].position);
-    if ((a - bullet.size - gameStore.otherCharacters[characterId].attributes.size) <= 0) {
+    a = GameHelper.distance({xAxis: bullet.xAxis, yAxis: bullet.yAxis}, gameStore.otherCharacters[characterId].position,gameStore.width/1280);
+    if ((a - bullet.size - gameStore.otherCharacters[characterId].attributes.size*gameStore.width/1280) <= 0) {
       hit = true;
     }
     if (hit && bullet.character_id!==gameStore.otherCharacters[characterId]._id&&!gameStore.otherCharacters[characterId].isHit) {
@@ -101,9 +103,9 @@ function collided(bullet:Bullet,index:number) {
   <g>
     <circle v-for="(bullet) in bullets"
             :fill="bullet.color"
-            :cx="bullet.xAxis"
-            :cy="bullet.yAxis"
-            :r="bullet.size"/>
+            :cx="bullet.xAxis*gameStore.width/1280"
+            :cy="bullet.yAxis*gameStore.width/1280"
+            :r="bullet.size*gameStore.width/1280"/>
   </g>
 </template>
 <style scoped>
