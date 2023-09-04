@@ -5,7 +5,6 @@ import {useStore} from "@/stores/store";
 const store=useStore()
 const toast=useToastStore()
 const user = store.user;
-
 </script>
 <template>
     <main>
