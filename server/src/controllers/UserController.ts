@@ -438,16 +438,21 @@ export const clientLogin = async (req: Request, res: Response, next: NextFunctio
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
+        logger.debug("client Login errors");
         res.send(errors);
     }
     passport.authenticate("local",{session:false},(err: Error, user: UserDocument, info: IVerifyOptions) => {
+        logger.debug("client Login passport");
         if (err) {
+            logger.debug("client Login passport err");
             return next(err);
         }
         if (!user) {
-            return res.status(400).send({msg: info.message});
+            logger.debug("client Login passport unauth");
+            return res.status(401).send({msg: info.message});
         }
         req.logIn(user, {session:false},(err) => {
+            logger.debug("client Login passport login");
             if (err) {
                 return next(err);
             }
