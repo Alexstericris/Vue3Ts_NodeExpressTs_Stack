@@ -3,6 +3,7 @@ import RegistrationApi from "@/apis/RegistrationApi";
 import type { LoginFormSubmitTarget, User} from "@/types/types";
 
 function attemptLogin($event: Event) {
+  $event.preventDefault();
   let formTarget = $event.target as LoginFormSubmitTarget | null
   let user: User = {
     email: String(formTarget?.elements?.email.value),
@@ -15,7 +16,7 @@ function attemptLogin($event: Event) {
 <template>
   <div class="container">
 <!--    <div class="container">-->
-        <form @submit.prevent="attemptLogin">
+        <form @submit="attemptLogin">
             <div class="form-group form-floating mb-3">
                 <input name="email"
                        id="email"
