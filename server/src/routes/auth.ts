@@ -5,6 +5,7 @@ import * as userController from "../controllers/UserController";
 import {clientLogin} from "../controllers/UserController";
 import jwt, {JwtPayload} from "jsonwebtoken";
 import {JWT_SECRET} from "../util/secrets";
+import logger from "../util/logger";
 
 export const authRouter = express.Router();
 authRouter.use((req: Request, res: Response,next:NextFunction) => {

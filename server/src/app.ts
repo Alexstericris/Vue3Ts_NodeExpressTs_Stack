@@ -17,6 +17,7 @@ import {registerWebRoutes} from "./routes/web";
 import {registerApiRoutes} from "./routes/api";
 import {registerAuthRoutes} from "./routes/auth";
 import process from "process";
+import logger from "./util/logger";
 
 // Create Express server
 const app = express();
@@ -57,11 +58,13 @@ app.use(flash());
 app.use(lusca.xframe("SAMEORIGIN"));
 app.use(lusca.xssProtection(true));
 app.use((req, res, next) => {
+    logger.debug('middleware1')
     res.locals.user = req.user;
     next();
 });
 app.use((req, res, next) => {
     // After successful login, redirect back to the intended page
+    logger.debug('middleware2')
     if (!req.user &&
         req.path !== "/login" &&
         req.path !== "/signup" &&

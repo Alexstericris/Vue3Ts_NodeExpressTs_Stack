@@ -12,6 +12,7 @@ import {CallbackError, Error, NativeError, Query} from "mongoose";
 import {Date} from "mongoose";
 import jwt from "jsonwebtoken";
 import {JWT_SECRET} from "../util/secrets";
+import logger from "../util/logger";
 
 /**
  * Login page.
@@ -429,6 +430,7 @@ export const getAuthUser = (req: Request, res: Response) => {
 };
 
 export const clientLogin = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    logger.debug("client Login");
     await check("email", "Email is not valid").isEmail().run(req);
     await check("password", "Password cannot be blank").isLength({min: 1}).run(req);
     await body("email").normalizeEmail({gmail_remove_dots: false}).run(req);
