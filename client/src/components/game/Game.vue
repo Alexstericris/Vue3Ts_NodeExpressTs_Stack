@@ -21,11 +21,11 @@ const height=ref(window.innerWidth)
 const width=ref(window.innerWidth)
 
 onBeforeMount(async ()=>{
-  await GameApi.getSelectedCharacter().then(response=>{
-    if (!response.data) {
-      router.push("characters")
+  await GameApi.getSelectedCharacter().then(responseData=>{
+    if (!responseData) {
+      window.location.href = '/characters';
     }
-    gameStore.character=response.data
+    gameStore.character=responseData
   })
   store.socket.emit('pendingGameJoin', gameStore.character as any);
   store.socket.on('playerJoined', (characters: CharactersCollection) => {

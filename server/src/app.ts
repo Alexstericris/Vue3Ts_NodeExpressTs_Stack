@@ -57,6 +57,7 @@ app.use(passport.session());
 app.use(flash());
 app.use(lusca.xframe("SAMEORIGIN"));
 app.use(lusca.xssProtection(true));
+
 app.use((req, res, next) => {
     logger.debug('middleware1')
     res.locals.user = req.user;
@@ -81,8 +82,16 @@ app.use((req, res, next) => {
 app.use(
     express.static(path.join(__dirname, "public"), {maxAge: 31557600000})
 );
-app.use(cors({origin: process.env.FRONTEND_URL}));
+app.use(cors({
+    origin: 'http://localhost:8080',
+    // "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+    // "preflightContinue": false,
+    // "Content-Type":"application/json",
+    credentials:true
+    // optionsSuccessStatus: 200
+}));
 
+// Use the handleOptions middleware before defining other routes
 
 /**
  * Primary app routes.

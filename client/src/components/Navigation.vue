@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import RegistrationApi from "@/apis/RegistrationApi";
 import {useStore} from "@/stores/store";
+import {computed} from "vue";
 const store=useStore()
+const user=computed(()=>{
+  return store.user;
+})
 
 function logout() {
   RegistrationApi.logout();
@@ -31,7 +35,7 @@ function logout() {
           <li>
             <RouterLink class="nav-link dropdown-item" to="/about">About</RouterLink>
           </li>
-          <template v-if="store.user?._id">
+          <template v-if="user&&user._id">
             <li>
               <RouterLink class="nav-link dropdown-item" to="/game">Game</RouterLink>
             </li>

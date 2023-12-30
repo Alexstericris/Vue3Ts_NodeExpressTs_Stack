@@ -1,7 +1,6 @@
 import type {Character, CharacterAttributes, Position} from "@/types/gametypes";
 import {useStore} from "@/stores/store";
-import http from "@/axios";
-// import {axiosGet, axiosPatch} from "@/axios";
+import http from "@/fetchWrapper";
 
 export default class GameApi{
     static createCharacter(characterAttributes: CharacterAttributes) {

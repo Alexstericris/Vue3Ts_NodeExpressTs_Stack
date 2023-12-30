@@ -1,23 +1,25 @@
 import type {User} from "@/types/types";
-import type {AxiosError, AxiosResponse} from "axios";
 import router from "@/router";
-import http from "@/axios";
+import http from "@/fetchWrapper";
 import {useStore} from "@/stores/store";
 import {useToastStore} from "@/stores/toastStore";
-
 
 export default class RegistrationApi {
     static login(user: User): void {
         const store=useStore()
+        const toast = useToastStore();
         http.post('/client/login', {
             email: user.email,
             password: user.password
-        }).then(response => {
-            store.setToken(response.data.token)
-            store.user= response.data.user
-            router.push('/')
+        }).then(responseData => {
+            store.setToken(responseData.token)
+            store.setUser(responseData.user)
+            window.location.href = '/';
         }).catch(e => {
-            console.log(e)
+            if (e.msg) {
+                toast.error(e.msg)
+            }
+            console.log(e);
         });
     }
 
@@ -26,14 +28,14 @@ export default class RegistrationApi {
         const toast = useToastStore();
         http.post('/client/register', {
             ...user
-        }).then((response: AxiosResponse) => {
-            store.setToken(response.data.token)
-            store.user= response.data.user
+        }).then((responseData) => {
+            store.setToken(responseData.token)
+            store.user= responseData.user
             window.location.href = '/';
-        }).catch((e: AxiosError) => {
-            if (e.response?.data?.errors) {
-                console.log(e.response.data.errors)
-                e.response.data.errors.forEach((e:any) => {
+        }).catch((e) => {
+            if (e.errors) {
+                console.log(e.errors)
+                e.errors.forEach((e:any) => {
                     toast.error(e?.msg)
                 });
             }

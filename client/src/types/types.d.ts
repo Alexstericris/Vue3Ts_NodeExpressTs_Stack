@@ -4,7 +4,9 @@ export interface User {
     email:string,
     password:string,
 }
-
+export interface FetchOptions{
+    params?: any
+}
 export interface LoginFormSubmitTarget {
     elements: {
         email: {

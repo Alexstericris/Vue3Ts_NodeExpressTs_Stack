@@ -19,9 +19,9 @@ const character = reactive({
 const emit = defineEmits(['newCharacter'])
 
 function newCharacter() {
-  GameApi.createCharacter(character as CharacterAttributes).then((response) => {
+  GameApi.createCharacter(character as CharacterAttributes).then((responseData) => {
     modal.value.hide()
-    gameStore.character=response.data
+    gameStore.character=responseData
     emit('newCharacter');
   }).catch(() => {
     toast.error('Failed to create character')

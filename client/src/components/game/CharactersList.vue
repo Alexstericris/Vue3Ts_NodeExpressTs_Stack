@@ -14,8 +14,8 @@ onBeforeMount(()=>{
 })
 
 function getSelectedCharacter() {
-  GameApi.getSelectedCharacter().then(response=>{
-    gameStore.selectedCharacter = response.data;
+  GameApi.getSelectedCharacter().then(responseData=>{
+    gameStore.selectedCharacter = responseData;
     console.log(gameStore.selectedCharacter)
   })
 }
@@ -33,8 +33,8 @@ function deleteCharacter(_id:string|undefined) {
 }
 
 function selectCharacter(_id:string|undefined) {
-  GameApi.selectCharacter(_id).then(response=>{
-    gameStore.selectedCharacter = response.data;
+  GameApi.selectCharacter(_id).then(responseData=>{
+    gameStore.selectedCharacter = responseData;
   })
 }
 

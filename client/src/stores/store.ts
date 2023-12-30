@@ -1,8 +1,7 @@
 import type {User} from "@/types/types";
 import {ioclient} from "@/ioclient";
 import type {Socket} from "socket.io-client";
-import type {AxiosResponse} from "axios";
-import http from "@/axios";
+import http from "@/fetchWrapper";
 import {defineStore} from "pinia";
 
 export interface State {
@@ -25,13 +24,16 @@ export const useStore= defineStore('store',{
             localStorage.setItem('token', token);
             this.socket= ioclient(this.token)
         },
+        setUser(user) {
+            this.user=user
+        },
         getAuthenticatedUser() {
             this.loading = true;
-            return http.post('/auth/user').then((response:AxiosResponse<any>) => {
+            return http.post('/auth/user').then((responseData) => {
                 if (!this.token) {
-                    this.setToken(response.data.token)
+                    this.setToken(responseData.token)
                 }
-                this.user= response.data.user
+                this.user= responseData.user
                 this.socket=ioclient(this.token)
             }).catch(() => {
                 this.token=''
