@@ -71,13 +71,19 @@ function getImgSrc(img: string) {
                     <div class="text-white m-0 py-5 col-sm-12 col-lg-5 col-md-5 bg-dark bg-opacity-25 h-100 rounded-3 p-3">
                         <h1 class="text-shadow display-5 fw-bold">Alex Cristea</h1>
                         <p class="text-shadow-2 fs-5">Developing Web since 2019.</p>
-                        <p class="text-shadow-2 fs-5">Working for
+                        <p class="text-shadow-2 fs-5">Worked for
                             <a class="text-decoration-none text-light-green" href="https://schubwerk.de">schubwerk GmbH</a>
-                            as a full stack developer.
+                            as a full stack developer for 4 years.
                         </p>
                         <p class="text-shadow-2 fs-5">Studying Computer Science at
                             <a class="text-decoration-none text-light-green" href="https://startseite.uni-mainz.de/">Johannes Gutenberg University</a>
                             since 2020.
+                        </p>
+                      <p class="text-shadow-2 fs-5">Working at
+                            <a class="text-decoration-none text-light-green" href="https://www.solit-kapital.de/">
+                              Solit Digital GmbH
+                            </a>
+                            as a Project-Manager since 2024.
                         </p>
                         <!--                    <button class="btn btn-primary btn-lg" type="button">Example button</button>-->
                     </div>
