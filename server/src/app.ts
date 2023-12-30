@@ -83,12 +83,8 @@ app.use(
     express.static(path.join(__dirname, "public"), {maxAge: 31557600000})
 );
 app.use(cors({
-    origin: 'http://localhost:8080',
-    // "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
-    // "preflightContinue": false,
-    // "Content-Type":"application/json",
-    credentials:true
-    // optionsSuccessStatus: 200
+    origin: process.env.FRONTEND_URL,
+    // credentials:true
 }));
 
 // Use the handleOptions middleware before defining other routes
