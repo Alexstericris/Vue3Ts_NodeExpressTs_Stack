@@ -10,7 +10,7 @@ const gameStore = useGameStore();
 
 </script>
 <template>
-    <circle :id="'player'+props.character._id" :fill="props.character.attributes.color"
+    <circle :id="'player'+props.character.id" :fill="props.character.attributes.color"
             :cx="props.character.position.xAxis*gameStore.width/1280"
             :cy="props.character.position.yAxis*gameStore.width/1280"
             :r="props.character.attributes.size*gameStore.width/1280"/>

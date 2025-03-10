@@ -46,7 +46,7 @@ function onClick($event: MouseEvent) {
     xVelocity: xVelocity,
     yVelocity: yVelocity,
     color: gameStore.character.attributes.color,
-    character_id: gameStore.character._id,
+    characterid: gameStore.character.id,
     size: 10,
     damage: 10
   }

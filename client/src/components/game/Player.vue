@@ -64,7 +64,7 @@ function persistPosition(){
     yAxis:yAxis.value
   }
   gameStore.character.position = position;
-  store.socket.emit('positionUpdated', props.character._id as any, position as any)
+  store.socket.emit('positionUpdated', props.character.id as any, position as any)
 }
 
 

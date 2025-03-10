@@ -35,7 +35,7 @@ function logout() {
           <li>
             <RouterLink class="nav-link dropdown-item" to="/about">About</RouterLink>
           </li>
-          <template v-if="user&&user._id">
+          <template v-if="user&&user.id">
             <li>
               <RouterLink class="nav-link dropdown-item" to="/game">Game</RouterLink>
             </li>
@@ -65,7 +65,7 @@ function logout() {
                     <li class="nav-item">
                         <RouterLink class="nav-link" to="/about">About</RouterLink>
                     </li>
-                    <template v-if="store.user?._id">
+                    <template v-if="store.user?.id">
                         <li class="nav-item">
                             <RouterLink class="nav-link" to="/game">Game</RouterLink>
                         </li>

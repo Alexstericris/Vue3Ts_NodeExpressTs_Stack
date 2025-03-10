@@ -61,8 +61,8 @@ function update() {
 function collided(bullet:Bullet,index:number) {
   //i got hit by other bullet
   let a=GameHelper.distance({xAxis: bullet.xAxis, yAxis: bullet.yAxis}, gameStore.character.position,gameStore.width/1280)
-  // console.log(bullet.character_id,gameStore.character._id,a,bullet.size,gameStore.character.attributes.size)
-  if (bullet.character_id!==gameStore.character._id
+  // console.log(bullet.characterid,gameStore.character.id,a,bullet.size,gameStore.character.attributes.size)
+  if (bullet.characterid!==gameStore.character.id
       &&(a - bullet.size - playerSize.value) <= 0) {
     nextTick(() => {
       console.log('got hit');
@@ -84,9 +84,9 @@ function collided(bullet:Bullet,index:number) {
     if ((a - bullet.size - gameStore.otherCharacters[characterId].attributes.size*gameStore.width/1280) <= 0) {
       hit = true;
     }
-    if (hit && bullet.character_id!==gameStore.otherCharacters[characterId]._id&&!gameStore.otherCharacters[characterId].isHit) {
+    if (hit && bullet.characterid!==gameStore.otherCharacters[characterId].id&&!gameStore.otherCharacters[characterId].isHit) {
       gameStore.otherCharacters[characterId].isHit = true;
-      console.log(gameStore.otherCharacters[characterId]._id + " hit")
+      console.log(gameStore.otherCharacters[characterId].id + " hit")
       store.socket.emit("enemyHit",gameStore.otherCharacters[characterId] as any)
       setTimeout(() => {
         gameStore.otherCharacters[characterId].isHit = false;

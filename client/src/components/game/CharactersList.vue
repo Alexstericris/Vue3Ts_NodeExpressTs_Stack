@@ -26,27 +26,27 @@ function getCharacters() {
   })
 }
 
-function deleteCharacter(_id:string|undefined) {
-  GameApi.deleteCharacter(_id).then(()=>{
+function deleteCharacter(id:string|undefined) {
+  GameApi.deleteCharacter(id).then(()=>{
     getCharacters();
   });
 }
 
-function selectCharacter(_id:string|undefined) {
-  GameApi.selectCharacter(_id).then(responseData=>{
+function selectCharacter(id:string|undefined) {
+  GameApi.selectCharacter(id).then(responseData=>{
     gameStore.selectedCharacter = responseData;
   })
 }
 
 function isSelected(characterId:string|undefined) {
-  return gameStore.selectedCharacter._id && gameStore.selectedCharacter._id === characterId;
+  return gameStore.selectedCharacter.id && gameStore.selectedCharacter.id === characterId;
 }
 </script>
 <template>
   <div>
     <div v-if="characters">
 
-        <div :key="character._id" v-for="character in characters" class="row row-cols-3">
+        <div :key="character.id" v-for="character in characters" class="row row-cols-3">
           <div class="row">
             <svg class="character mb-3 col ">
                 <circle ref="player" :fill="character.attributes.color"
@@ -57,11 +57,11 @@ function isSelected(characterId:string|undefined) {
             <div class="col d-flex align-items-center">
               <div class="col-sm-6">
                 <button class="btn btn-primary mb-3"
-                        :class="isSelected(character._id)?'disabled':''"
-                        @click="selectCharacter(character._id)">
-                  {{isSelected(character?._id)?'SELECTED':'SELECT'}}
+                        :class="isSelected(character.id)?'disabled':''"
+                        @click="selectCharacter(character.id)">
+                  {{isSelected(character?.id)?'SELECTED':'SELECT'}}
                 </button>
-                <button class="btn btn-danger" @click="deleteCharacter(character._id)">DELETE</button>
+                <button class="btn btn-danger" @click="deleteCharacter(character.id)">DELETE</button>
               </div>
             </div>
           </div>

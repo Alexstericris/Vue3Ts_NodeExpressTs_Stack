@@ -18,3 +18,4 @@ node_modules/
 /client/.env
 /.idea/php.xml
 /.env
+/.idea/phpunit.xml

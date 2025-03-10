@@ -8,7 +8,7 @@ export default class RegistrationApi {
     static login(user: User): void {
         const store=useStore()
         const toast = useToastStore();
-        http.post('/client/login', {
+        http.post('/login', {
             email: user.email,
             password: user.password
         }).then(responseData => {
@@ -26,20 +26,21 @@ export default class RegistrationApi {
     static register(user: User):void {
         const store=useStore()
         const toast = useToastStore();
-        http.post('/client/register', {
+        http.post('/register', {
             ...user
         }).then((responseData) => {
+            console.log(responseData)
             store.setToken(responseData.token)
             store.user= responseData.user
             window.location.href = '/';
         }).catch((e) => {
+            console.log(e);
             if (e.errors) {
                 console.log(e.errors)
                 e.errors.forEach((e:any) => {
                     toast.error(e?.msg)
                 });
             }
-
         });
     }
 

@@ -8,7 +8,7 @@ export default class GameApi{
         const character: Character = {
             attributes: characterAttributes,
             position: {xAxis: characterAttributes.size, yAxis: characterAttributes.size},
-            user_id: store.user?._id
+            userid: store.user?.id
         };
         return http.post('/api/characters/create', {
             ...{character}
@@ -19,16 +19,16 @@ export default class GameApi{
         return http.get('/api/characters/')
     }
 
-    static updatePosition(_id:string|undefined,position:Position) {
+    static updatePosition(id:string|undefined,position:Position) {
         return http.patch('/api/characters/update/position',{
-            ...{_id,position}
+            ...{id,position}
         })
     }
 
-    static deleteCharacter(_id:string|undefined) {
+    static deleteCharacter(id:string|undefined) {
         return http.delete('/api/characters/delete',{
             params:{
-                _id
+                id
             }
         })
     }
@@ -37,9 +37,9 @@ export default class GameApi{
         return http.get('/api/characters/selected')
     }
 
-    static selectCharacter(_id:string|undefined) {
+    static selectCharacter(id:string|undefined) {
         return http.post('/api/characters/select', {
-            _id
+            id
         })
     }
 }

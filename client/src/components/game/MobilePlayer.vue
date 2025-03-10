@@ -64,7 +64,7 @@ function persistPosition(){
     yAxis:yAxis.value*1280/gameStore.width
   }
   gameStore.character.position = position;
-  store.socket.emit('positionUpdated', gameStore.character._id as any, position as any)
+  store.socket.emit('positionUpdated', gameStore.character.id as any, position as any)
 }
 
 function getHealthPercentage() {

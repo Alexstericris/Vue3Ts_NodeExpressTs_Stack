@@ -8,8 +8,11 @@ const http={
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': localStorage.getItem('csrf')??'',
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
             },
+            credentials: 'include',
         };
         let fullUrl = `${url}${uri}`;
         if (options?.params) {
@@ -29,8 +32,11 @@ const http={
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': localStorage.getItem('csrf')??'',
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
             },
+            credentials: 'include',
             body:JSON.stringify(data)
         };
         let fullUrl = `${url}${uri}`;
@@ -51,8 +57,11 @@ const http={
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': localStorage.getItem('csrf')??'',
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
             },
+            credentials: 'include',
             body:JSON.stringify(data)
         };
         let fullUrl = `${url}${uri}`;
@@ -73,8 +82,11 @@ const http={
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': localStorage.getItem('csrf')??'',
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
             },
+            credentials: "include",
         };
         let fullUrl = `${url}${uri}`;
         if (options?.params) {

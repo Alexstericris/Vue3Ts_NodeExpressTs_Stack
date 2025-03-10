@@ -6,7 +6,7 @@ const user = reactive({
   username: '',
   email: '',
   password: '',
-  confirmPassword: '',
+  password_confirmation: '',
 })
 function register() {
   RegistrationApi.register(user);
@@ -39,7 +39,7 @@ function register() {
                 <label for="userPassword">Password</label>
             </div>
             <div class="form-group form-floating mb-3">
-                <input v-model="user.confirmPassword"
+                <input v-model="user.password_confirmation"
                        id="userConfirmPassword"
                        class="form-control"
                        type="password"

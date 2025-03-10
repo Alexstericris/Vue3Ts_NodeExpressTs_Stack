@@ -11,8 +11,8 @@ export interface Position {
 }
 
 export interface Character {
-    _id?: string,
-    user_id?: string,
+    id?: string,
+    userid?: string,
     position: Position
     attributes: CharacterAttributes,
     isHit?:boolean
@@ -20,7 +20,7 @@ export interface Character {
 
 export interface Bullet {
     color: string,
-    character_id?: string,
+    characterid?: string,
     size: number,
     xAxis: number,
     yAxis: number,

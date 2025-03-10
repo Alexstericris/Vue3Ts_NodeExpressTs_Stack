@@ -10,10 +10,13 @@ const app = createApp(App)
 app.use(pinia)
 
 const store=useStore()
-store.getAuthenticatedUser().then(()=>{
-    app.use(router)
-    app.mount('#app');
+store.getCsrf().then(() => {
+    store.getAuthenticatedUser().then(() => {
+        app.use(router)
+        app.mount('#app');
+    })
 })
+
 // const io = ioclient;
 
 // send a message to the server

@@ -29,8 +29,8 @@ onBeforeMount(async ()=>{
   })
   store.socket.emit('pendingGameJoin', gameStore.character as any);
   store.socket.on('playerJoined', (characters: CharactersCollection) => {
-    if (gameStore.character._id) {
-      delete characters[gameStore.character._id];
+    if (gameStore.character.id) {
+      delete characters[gameStore.character.id];
     }
     gameStore.otherCharacters = characters;
   });
@@ -41,8 +41,8 @@ onBeforeMount(async ()=>{
   })
   store.socket.on('playerLeft', (character: Character) => {
     console.log("playerLeft")
-    if (character._id) {
-      delete gameStore.otherCharacters[character._id];
+    if (character.id) {
+      delete gameStore.otherCharacters[character.id];
     }
   });
 });
@@ -58,7 +58,7 @@ onBeforeUnmount(()=>{
   <!--    <BaseCanvasLayer></BaseCanvasLayer>-->
   <div class="text-center mt-6">
     <BaseLayer>
-      <template v-if="gameStore.character?._id">
+      <template v-if="gameStore.character?.id">
         <MobilePlayer v-if="height<720||width<1280" :character="gameStore.character"></MobilePlayer>
         <template v-else>
           <Player :character="gameStore.character"></Player>
@@ -66,8 +66,8 @@ onBeforeUnmount(()=>{
         </template>
       </template>
       <Bullets></Bullets>
-      <template :key="otherCharacter?._id" v-for="(otherCharacter) in gameStore.otherCharacters">
-        <OtherPlayer v-if="gameStore.character?._id!==otherCharacter?._id"
+      <template :key="otherCharacter?.id" v-for="(otherCharacter) in gameStore.otherCharacters">
+        <OtherPlayer v-if="gameStore.character?.id!==otherCharacter?.id"
                    :character="otherCharacter"
                    :is="'OtherPlayer'"></OtherPlayer>
       </template>
