@@ -1,27 +1,10 @@
 <script setup lang="ts">
 import {RouterView} from 'vue-router'
-import Navigation from "@/components/Navigation.vue";
-import Toast from "@/components/snippets/Toast.vue";
 
 </script>
 
 <template>
-  <header>
-    <!--    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />-->
-    <!--    <div class="wrapper">-->
-    <!--      <HelloWorld msg="You did it!" />-->
-    <!--    </div>-->
-    <Navigation></Navigation>
-  </header>
   <RouterView class="mt-6 mb-5"/>
-  <Toast></Toast>
-  <footer class="py-2 mt-4 page-footer col-12 text-muted text-center bg-white border-top">
-    <div class="container">
-      <div>
-        ©Sterian-Alexandru Cristea 2021
-      </div>
-    </div>
-  </footer>
 </template>
 <style lang="scss">
 $primary: #2b7c4f;

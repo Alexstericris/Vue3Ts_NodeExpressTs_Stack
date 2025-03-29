@@ -16,13 +16,12 @@ onBeforeMount(()=>{
 function getSelectedCharacter() {
   GameApi.getSelectedCharacter().then(responseData=>{
     gameStore.selectedCharacter = responseData;
-    console.log(gameStore.selectedCharacter)
   })
 }
 
 function getCharacters() {
-  GameApi.getCharacters().then(res => {
-    characters.value=res.data;
+  GameApi.getCharacters().then(json => {
+    characters.value=json;
   })
 }
 
@@ -49,10 +48,10 @@ function isSelected(characterId:string|undefined) {
         <div :key="character.id" v-for="character in characters" class="row row-cols-3">
           <div class="row">
             <svg class="character mb-3 col ">
-                <circle ref="player" :fill="character.attributes.color"
-                        :cx="character.attributes.size"
-                        :cy="character.attributes.size"
-                        :r="character.attributes.size"/>
+                <circle ref="player" :fill="character.color"
+                        :cx="character.size"
+                        :cy="character.size"
+                        :r="character.size"/>
             </svg>
             <div class="col d-flex align-items-center">
               <div class="col-sm-6">

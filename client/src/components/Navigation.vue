@@ -2,11 +2,12 @@
 import RegistrationApi from "@/apis/RegistrationApi";
 import {useStore} from "@/stores/store";
 import {computed} from "vue";
+import {useGameStore} from "@/stores/gameStore";
 const store=useStore()
 const user=computed(()=>{
   return store.user;
 })
-
+const gameStore = useGameStore();
 function logout() {
   RegistrationApi.logout();
 }

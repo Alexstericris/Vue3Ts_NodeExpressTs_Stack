@@ -1,4 +1,4 @@
-import type {Character, CharacterAttributes, Position} from "@/types/gametypes";
+import type {Character, CharacterAttributes} from "@/types/gametypes";
 import {useStore} from "@/stores/store";
 import http from "@/fetchWrapper";
 
@@ -6,9 +6,14 @@ export default class GameApi{
     static createCharacter(characterAttributes: CharacterAttributes) {
         const store=useStore()
         const character: Character = {
-            attributes: characterAttributes,
-            position: {xAxis: characterAttributes.size, yAxis: characterAttributes.size},
-            userid: store.user?.id
+            id:'',
+            color: characterAttributes.color,
+            size: characterAttributes.size,
+            max_health_points: characterAttributes.max_health_points,
+            health_points: characterAttributes.health_points,
+            x_axis: characterAttributes.size,
+            y_axis: characterAttributes.size,
+            user_id: store.user?.id
         };
         return http.post('/api/characters/create', {
             ...{character}
@@ -19,9 +24,9 @@ export default class GameApi{
         return http.get('/api/characters/')
     }
 
-    static updatePosition(id:string|undefined,position:Position) {
-        return http.patch('/api/characters/update/position',{
-            ...{id,position}
+    static updatePosition(id:string|undefined,character:Character) {
+        return http.post('/api/characters/update',{
+            ...{id,character}
         })
     }
 

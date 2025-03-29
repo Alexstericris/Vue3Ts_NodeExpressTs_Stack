@@ -5,16 +5,18 @@ export interface  CharacterAttributes {
     health_points:number,
 }
 
-export interface Position {
-    xAxis: number,
-    yAxis: number,
-}
-
 export interface Character {
-    id?: string,
-    userid?: string,
-    position: Position
-    attributes: CharacterAttributes,
+    id: string,
+    user_id?: string,
+    x_axis: number,
+    y_axis: number,
+    color: string,
+    size: number,
+    max_health_points: number,
+    health_points: number,
+    created_at?: string,
+    updated_at?: string,
+    selected?: boolean
     isHit?:boolean
 }
 

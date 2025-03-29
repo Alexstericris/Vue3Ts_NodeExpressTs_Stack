@@ -3,6 +3,7 @@ import {computed, onMounted, ref} from "vue";
 import type {Character} from "@/types/gametypes";
 import {useStore} from "@/stores/store";
 import {useGameStore} from "@/stores/gameStore";
+import GameApi from "@/apis/GameApi";
 
 const props=defineProps<{
   character:Character
@@ -10,7 +11,7 @@ const props=defineProps<{
 const store = useStore();
 const gameStore = useGameStore();
 const playerSize=computed(()=>{
-  return gameStore.character.attributes.size*gameStore.width/1280
+  return gameStore.character.size*gameStore.width/1280
 })
 const xAxis = ref(100);
 const yAxis = ref(100);
@@ -45,8 +46,8 @@ function loop() {
 }
 
 function setStartingPosition() {
-  xAxis.value = props.character.position.xAxis;
-  yAxis.value = props.character.position.yAxis;
+  xAxis.value = props.character.x_axis;
+  yAxis.value = props.character.y_axis;
 }
 
 function isHit() {
@@ -58,13 +59,18 @@ function isHit() {
   }
 }
 
-function persistPosition(){
-  let position={
-    xAxis:xAxis.value,
-    yAxis:yAxis.value
-  }
-  gameStore.character.position = position;
-  store.socket.emit('positionUpdated', props.character.id as any, position as any)
+let updateTimeout;
+
+function persistPosition() {
+  gameStore.character.x_axis = xAxis.value;
+  gameStore.character.y_axis = yAxis.value;
+
+  store.room?.whisper('positionUpdated', gameStore.character);
+
+  clearTimeout(updateTimeout);
+  updateTimeout = setTimeout(() => {
+    GameApi.updatePosition(gameStore.character.id, gameStore.character);
+  }, 100);
 }
 
 
@@ -111,7 +117,7 @@ function movePlayer() {
 }
 
 function getHealthPercentage() {
-  return props.character.attributes.health_points / props.character.attributes.max_health_points;
+  return props.character.health_points / props.character.max_health_points;
 }
 function update() {
   if (inputs.value) {
@@ -178,11 +184,11 @@ onMounted(()=> {
 <template>
   <g>
     <rect class="hitOverlay" x="0" y="0" width="100%" height="100%" :fill="'rgba(255, 0, 0,'+hitOpacity+ ')'"></rect>
-    <circle ref="player" :fill="character.attributes.color"
+    <circle ref="player" :fill="character.color"
             :cx="xAxis"
             :cy="yAxis"
             :r="playerSize"/>
-    <template v-if="character.attributes.health_points<character.attributes.max_health_points">
+    <template v-if="character.health_points<character.max_health_points">
       <rect :x="xAxis -playerSize"
             :y="yAxis+ playerSize +10"
             :width="playerSize*2"

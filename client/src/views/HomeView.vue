@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import {useToastStore} from "@/stores/toastStore";
 import {useStore} from "@/stores/store";
+import MainLayout from "@/views/Layouts/MainLayout.vue";
 
 const store=useStore()
 const toast=useToastStore()
 const user = store.user;
 </script>
 <template>
-    <main>
+  <MainLayout>
         <div class="container mt-5 py-4 text-center">
             <div class="flex flex-wrap justify-content-center">
                     <a class="btn text-nowrap mt-3 px-10 mx-2 py-5 bg-light rounded text-decoration-none" href="https://www.numeriqberry.com">
@@ -19,8 +20,7 @@ const user = store.user;
                     </RouterLink>
             </div>
         </div>
-    </main>
-
+  </MainLayout>
     <!--    <div class="welcome">-->
 <!--        <div class="container">-->
 <!--            <h1>Hello Digga</h1>-->

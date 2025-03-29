@@ -1,8 +1,11 @@
 import type {User} from "@/types/types";
-import {ioclient} from "@/ioclient";
+// import {ioclient} from "@/ioclient";
 import type {Socket} from "socket.io-client";
 import http from "@/fetchWrapper";
 import {defineStore} from "pinia";
+import Pusher from "pusher-js";
+import Echo from "laravel-echo";
+import type {Broadcaster} from "laravel-echo";
 
 export interface State {
     token: string
@@ -10,6 +13,8 @@ export interface State {
     user?: User,
     socket: Socket,
     loading: boolean,
+    echo: Echo<any>,
+    room: Broadcaster['reverb']['presence']|null
 }
 
 export const useStore = defineStore('store', {
@@ -19,6 +24,24 @@ export const useStore = defineStore('store', {
         csrf: localStorage.getItem('csrf') || '',
         user: {} as User,
         socket: {} as Socket,
+        echo: new Echo({
+            authEndpoint: import.meta.env.VITE_API_URL + '/api/broadcasting/auth',
+            broadcaster: 'reverb',
+            key: import.meta.env.VITE_REVERB_APP_KEY,
+            wsHost: import.meta.env.VITE_REVERB_HOST,
+            wsPort: import.meta.env.VITE_REVERB_PORT,
+            wssPort: import.meta.env.VITE_REVERB_PORT,
+            forceTLS: (import.meta.env.VITE_REVERB_SCHEME ?? 'https') === 'https',
+            enabledTransports: ['ws', 'wss'],
+            auth: {
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem('token'),
+                    'X-CSRF-TOKEN': localStorage.getItem('csrf')??'',
+
+                },
+            },
+        }),
+        room: null
     }),
     actions: {
         setCsrf(token: string) {
@@ -38,16 +61,16 @@ export const useStore = defineStore('store', {
         setToken(token: string) {
             this.token = token
             localStorage.setItem('token', token);
-            this.socket = ioclient(this.token)
+            // this.socket = ioclient(this.token)
         },
         setUser(user) {
             this.user = user
         },
         getAuthenticatedUser() {
             this.loading = true;
-            return http.post('/auth/user').then((responseData) => {
+            return http.get('/api/user').then((responseData) => {
                 this.user = responseData
-                this.socket = ioclient(this.token)
+                // this.socket = ioclient(this.token)
             }).catch(() => {
                 this.token = ''
             }).finally(() => {

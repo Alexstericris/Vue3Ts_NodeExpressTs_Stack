@@ -14,7 +14,7 @@ export interface GameState {
     clickY: number,
     height: number,
     width: number,
-    gameStarted:boolean,
+    gameRunning:boolean,
 }
 
 export const useGameStore= defineStore('game',{
@@ -27,7 +27,7 @@ export const useGameStore= defineStore('game',{
         clicked: false,
         clickX: 0,
         clickY: 0,
-        gameStarted: false,
+        gameRunning: false,
         height:720,
         width:1280,
         selectedCharacter: {} as Character,

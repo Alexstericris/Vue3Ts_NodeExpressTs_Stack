@@ -10,7 +10,7 @@ const gameStore = useGameStore();
 const mobileGameStore=useMobileGameStore()
 
 const playerSize=computed(()=>{
-  return gameStore.character.attributes.size*gameStore.width/1280
+  return gameStore.character.size*gameStore.width/1280
 })
 const xAxis = ref(100);
 const yAxis = ref(100);
@@ -41,11 +41,11 @@ function loop() {
 }
 
 function setStartingPosition() {
-  if (gameStore.character.position.xAxis) {
-    xAxis.value = gameStore.character.position.xAxis;
+  if (gameStore.character.x_axis) {
+    xAxis.value = gameStore.character.x_axis;
   }
-  if (gameStore.character.position.yAxis) {
-    yAxis.value = gameStore.character.position.yAxis;
+  if (gameStore.character.y_axis) {
+    yAxis.value = gameStore.character.y_axis;
   }
 }
 
@@ -59,16 +59,13 @@ function isHit() {
 }
 
 function persistPosition(){
-  let position={
-    xAxis:xAxis.value*1280/gameStore.width,
-    yAxis:yAxis.value*1280/gameStore.width
-  }
-  gameStore.character.position = position;
-  store.socket.emit('positionUpdated', gameStore.character.id as any, position as any)
+  gameStore.character.x_axis = xAxis.value*1280/gameStore.width;
+  gameStore.character.y_axis = yAxis.value*1280/gameStore.width;
+  store.room?.whisper('positionUpdated', gameStore.character.id as any, gameStore.character as any)
 }
 
 function getHealthPercentage() {
-  return gameStore.character.attributes.health_points / gameStore.character.attributes.max_health_points;
+  return gameStore.character.health_points / gameStore.character.max_health_points;
 }
 function update() {
   if (mobileGameStore.clicked) {
@@ -163,11 +160,11 @@ onMounted(()=> {
 <template>
   <g>
     <rect class="hitOverlay" x="0" y="0" width="100%" height="100%" :fill="'rgba(255, 0, 0,'+hitOpacity+ ')'"></rect>
-    <circle ref="player" :fill="gameStore.character.attributes.color"
+    <circle ref="player" :fill="gameStore.character.color"
             :cx="xAxis"
             :cy="yAxis"
             :r="playerSize"/>
-    <template v-if="gameStore.character.attributes.health_points<gameStore.character.attributes.max_health_points">
+    <template v-if="gameStore.character.health_points<gameStore.character.max_health_points">
       <rect :x="xAxis -playerSize"
             :y="yAxis+ playerSize +10"
             :width="playerSize*2"

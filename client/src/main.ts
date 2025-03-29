@@ -4,10 +4,13 @@ import router from './router'
 import {useStore} from "@/stores/store";
 import "bootstrap"
 import { createPinia } from 'pinia'
+import Pusher from "pusher-js";
 
 const pinia = createPinia()
 const app = createApp(App)
 app.use(pinia)
+
+window.Pusher = Pusher;
 
 const store=useStore()
 store.getCsrf().then(() => {

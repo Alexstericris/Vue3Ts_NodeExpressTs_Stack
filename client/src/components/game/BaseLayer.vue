@@ -32,26 +32,26 @@ function onMouseMove($event: MouseEvent) {
 function onClick($event: MouseEvent) {
   let xTo=($event.clientX - left.value)*1280/gameStore.width
   let yTo=($event.clientY - top.value)*1280/gameStore.width
-  let b = xTo - gameStore.character.position.xAxis
-  let c = yTo - gameStore.character.position.yAxis
+  let b = xTo - gameStore.character.x_axis
+  let c = yTo - gameStore.character.y_axis
   let a = Math.sqrt(b ** 2 + c ** 2)
   let ratio = bulletVelocity.value / a;
   let xVelocity = ratio * b
   let yVelocity = ratio * c
   let bullet:Bullet = {
-    xAxis: gameStore.character.position.xAxis,
-    yAxis: gameStore.character.position.yAxis,
+    xAxis: gameStore.character.x_axis,
+    yAxis: gameStore.character.y_axis,
     xTo: xTo,
     yTo: yTo,
     xVelocity: xVelocity,
     yVelocity: yVelocity,
-    color: gameStore.character.attributes.color,
+    color: gameStore.character.color,
     characterid: gameStore.character.id,
     size: 10,
     damage: 10
   }
-  console.log(gameStore.character.position,bullet)
-  store.socket.emit('shootBullet',bullet as any)
+  gameStore.bullets.push(bullet)
+  store.room?.whisper('shootBullet',bullet as any)
 }
 </script>
 
